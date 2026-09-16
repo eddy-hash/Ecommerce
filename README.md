@@ -9,11 +9,11 @@
 </div>
 
 <div align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=3000&pause=800&color=2563EB&center=true&vCenter=true&width=700&height=50&lines=Full-stack+E-Commerce+Platform;Alibaba-inspired+B2C+Marketplace;Spring+Boot+%2B+React+%2B+MySQL" alt="Typing" />
+ <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=3000&pause=800&color=2563EB&center=true&vCenter=true&width=700&height=50&lines=Full-stack+E-Commerce+Platform;Alibaba-inspired+B2C+Marketplace;Spring+Boot+%2B+React+%2B+MySQL" alt="Typing" />
 </div>
 
 <div align="center">
-  <img src="https://skillicons.dev/icons?i=java,spring,mysql,react,vite,tailwind,js,git,github&theme=dark&perline=10" alt="Tech" />
+ <img src="https://skillicons.dev/icons?i=java,spring,mysql,react,vite,tailwind,js,git,github&theme=dark&perline=10" alt="Tech" />
 </div>
 
 <br />
@@ -29,66 +29,66 @@
 
 ---
 
-## What is ShopHub?
+## 📌 What is ShopHub?
 
 **ShopHub** is a modern, production-grade e-commerce platform built with **Spring Boot** and **React**. It follows the **Alibaba-style B2C marketplace** model, where independent traders list products and customers browse, order, and pay — all within a single unified platform.
 
 ### Three Pillars
 
--  🏪 **Multi-vendor support** — every trader operates an independent storefront
--  📦 **End-to-end order lifecycle** — cart → checkout → payment → shipping → delivery
--  🔒 **Enterprise-grade security** — JWT, BCrypt, role-based access, per-resource ownership
+- 🏪 **Multi-vendor support** — every trader operates an independent storefront
+- **End-to-end order lifecycle** — cart → checkout → payment → shipping → delivery
+- 🔒 **Enterprise-grade security** — JWT, BCrypt, role-based access, per-resource ownership
 
 ---
 
-## Features
+## ✨ Features
 
-### Authentication & Authorization
+### 🔒 Authentication & Authorization
 
--  🔐 **Role-based access** — `CUSTOMER` and `TRADER` with separate dashboards
--  🎫 **JWT authentication** — stateless, industry-standard tokens
--  🔒 **BCrypt password hashing** — 10-round salting
--  ✅ **Email uniqueness** — case-insensitive, race-safe
--  💾 **Persistent sessions** — tokens survive refresh
+- 🔐 **Role-based access** — `CUSTOMER` and `TRADER` with separate dashboards
+- **JWT authentication** — stateless, industry-standard tokens
+- 🔒 **BCrypt password hashing** — 10-round salting
+- ✅ **Email uniqueness** — case-insensitive, race-safe
+- **Persistent sessions** — tokens survive refresh
 
-### Customer Features
+### 👤 Customer Features
 
--  📂 **Browse by category** — Electronics, Clothing, Books, Home & Kitchen, Sports
--  🏬 **Discover traders** — visit individual storefronts
--  📸 **Product detail** — images, colors, stock indicators
--  🛍️ **Multi-step checkout** — shipping → payment → review
--  📋 **Order history** — track every stage
--  🎒 **Cart drawer** — slide-in with real-time totals
+- **Browse by category** — Electronics, Clothing, Books, Home & Kitchen, Sports
+- **Discover traders** — visit individual storefronts
+- **Product detail** — images, colors, stock indicators
+- 🛍️ **Multi-step checkout** — shipping → payment → review
+- 📋 **Order history** — track every stage
+- **Cart drawer** — slide-in with real-time totals
 
-### Trader Features
+### 🏪 Trader Features
 
--  📦 **Product management** — add, edit, delete with image upload
--  🧙 **Multi-step wizard** — info → pricing → photo → options → review
--  💰 **Revenue dashboard** — total revenue, pending orders, top products
--  📨 **Incoming orders** — view, ship, deliver, or cancel
--  📊 **Stock tracking** — auto-decrement, restore on cancel
--  🔒 **Per-trader isolation** — traders only edit their own products
+- **Product management** — add, edit, delete with image upload
+- **Multi-step wizard** — info → pricing → photo → options → review
+- **Revenue dashboard** — total revenue, pending orders, top products
+- **Incoming orders** — view, ship, deliver, or cancel
+- **Stock tracking** — auto-decrement, restore on cancel
+- 🔒 **Per-trader isolation** — traders only edit their own products
 
-### User Experience
+### 🎯 User Experience
 
--  🌗 **Dark / light mode** — persistent toggle
--  ✨ **Floating label inputs** — Material Design
--  🎉 **Animated success modals** — SVG tick + confetti
--  🎬 **Framer Motion transitions**
--  📱 **Responsive design** — mobile-first
--  🔔 **Toast notifications** — real-time feedback
-
----
-
-## Architecture
-
+- 🌗 **Dark / light mode** — persistent toggle
+- ✨ **Floating label inputs** — Material Design
+- **Animated success modals** — SVG tick + confetti
+- **Framer Motion transitions**
+- 📱 **Responsive design** — mobile-first
+- **Toast notifications** — real-time feedback
 
 ---
 
-## Tech Stack
+## 🏛️ Architecture
+
+
+---
+
+## ⚙️ Tech Stack
 
 <div align="center">
-  <img src="https://skillicons.dev/icons?i=java,spring,mysql,maven,react,vite,tailwind,js,git,github&theme=dark" alt="Tech stack" />
+ <img src="https://skillicons.dev/icons?i=java,spring,mysql,maven,react,vite,tailwind,js,git,github&theme=dark" alt="Tech stack" />
 </div>
 
 | Layer | Technology | Version |
@@ -107,14 +107,14 @@
 
 ---
 
-## Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
 
--  ☕ **Java 17** — [Temurin](https://adoptium.net)
--  📦 **Maven 3.9+**
--  🟢 **Node.js 20+**
--  🐬 **MySQL 8.0**
+- **Java 17** — [Temurin](https://adoptium.net)
+- **Maven 3.9+**
+- **Node.js 20+**
+- **MySQL 8.0**
 
 ### Setup
 
