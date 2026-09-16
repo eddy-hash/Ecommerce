@@ -1,0 +1,1 @@
+USE ecommerce_db; ALTER TABLE products ADD COLUMN image_url VARCHAR(500) NULL;

@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ══════════════════════════════════════════════════════════
+   GLOBAL STYLES
+   ══════════════════════════════════════════════════════════ */
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  @apply bg-gray-50 text-gray-900 transition-colors duration-200;
+}
+
+.dark body {
+  @apply bg-gray-900 text-gray-100;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { @apply bg-gray-100 dark:bg-gray-800; }
+::-webkit-scrollbar-thumb { @apply bg-gray-300 dark:bg-gray-600 rounded; }
+::-webkit-scrollbar-thumb:hover { @apply bg-gray-400 dark:bg-gray-500; }
+
+/* ══════════════════════════════════════════════════════════
+   REUSABLE COMPONENT CLASSES
+   ══════════════════════════════════════════════════════════ */
+.btn-primary {
+  @apply bg-brand-600 hover:bg-brand-700 text-white font-medium px-4 py-2 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed;
+}
+.btn-secondary {
+  @apply bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 font-medium px-4 py-2 rounded-lg transition-all duration-200;
+}
+.input-field {
+  @apply w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition;
+}
+.card {
+  @apply bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 transition-colors;
+}
+
+/* ══════════════════════════════════════════════════════════
+   GLOBAL DARK-MODE OVERRIDES (fallback layer)
+   ══════════════════════════════════════════════════════════ */
+
+/* Every white card/div gets a dark variant automatically */
+.dark .bg-white { @apply bg-gray-800; }
+.dark .bg-gray-50 { @apply bg-gray-900; }
+.dark .bg-gray-100 { @apply bg-gray-800; }
+
+/* Text fallbacks */
+.dark .text-gray-900 { @apply text-gray-100; }
+.dark .text-gray-800 { @apply text-gray-200; }
+.dark .text-gray-700 { @apply text-gray-200; }
+.dark .text-gray-600 { @apply text-gray-300; }
+.dark .text-gray-500 { @apply text-gray-400; }
+
+/* Borders */
+.dark .border-gray-200 { @apply border-gray-700; }
+.dark .border-gray-300 { @apply border-gray-600; }
+
+/* Dividers */
+.dark .divide-gray-200 > * + * { @apply border-gray-700; }
+
+/* Hover fallbacks */
+.dark .hover\:bg-gray-50:hover { @apply bg-gray-700; }
+.dark .hover\:bg-gray-100:hover { @apply bg-gray-700; }
+
+/* Select dropdown options (browser-forced dark) */
+.dark select option {
+  @apply bg-gray-800 text-gray-100;
+}
+
+/* Forms */
+.dark input, .dark textarea, .dark select {
+  color-scheme: dark;
+}
