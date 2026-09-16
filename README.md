@@ -1,5 +1,11 @@
 ﻿<div align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=220&section=header&text=ShopHub&fontSize=70&fontColor=ffffff&animation=fadeIn&desc=E-Commerce%20%26%20Order%20Management%20System&descAlignY=58&descSize=16" alt="ShopHub" />
+
+# 🛍️ ShopHub
+
+### E-Commerce & Order Management System
+
+*A full-stack marketplace connecting customers with trusted traders.*
+
 </div>
 
 <div align="center">
