@@ -1,0 +1,40 @@
+# Node
+node_modules/
+dist/
+build/
+.vite/
+
+# Java / Maven
+target/
+*.class
+Backend/mvnw
+Backend/mvnw.cmd
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.iml
+*.swp
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Uploads — user-generated content
+uploads/
+
+# Test files
+test-*.json
+*.sql.bak
+
+# Old pom backup
+*.old
