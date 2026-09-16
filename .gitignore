@@ -1,40 +1,48 @@
-# Node
+# ────────────── Node / Frontend ──────────────
 node_modules/
 dist/
 build/
 .vite/
+*.local
 
-# Java / Maven
+# ────────────── Java / Maven / Backend ───────
 target/
 *.class
-Backend/mvnw
-Backend/mvnw.cmd
+*.jar
+!maven-wrapper.jar
+*.war
 
-# Environment
+# ────────────── Environment & Secrets ────────
 .env
 .env.local
 .env.*.local
+application-local.properties
 
-# IDE
+# ────────────── IDE ──────────────────────────
 .vscode/
 .idea/
 *.iml
 *.swp
+*.swo
 
-# Logs
+# ────────────── Logs ─────────────────────────
 *.log
 npm-debug.log*
+yarn-debug.log*
 
-# OS
+# ────────────── OS ───────────────────────────
 .DS_Store
 Thumbs.db
+desktop.ini
 
-# Uploads — user-generated content
+# ────────────── User Uploads ─────────────────
 uploads/
 
-# Test files
+# ────────────── Test Files ───────────────────
 test-*.json
+*-test.json
 *.sql.bak
 
-# Old pom backup
+# ────────────── Backups ──────────────────────
 *.old
+*.bak
