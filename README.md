@@ -1,36 +1,24 @@
-# ShopHub
+﻿<div align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=220&section=header&text=ShopHub&fontSize=70&fontColor=ffffff&animation=fadeIn" />
+</div>
 
-E-Commerce & Order Management System â€” a full-stack marketplace connecting customers with trusted traders.
+<div align="center">
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=22&color=2563EB&center=true&width=700&lines=Full-stack+E-Commerce+Platform;Alibaba-inspired+B2C;Spring+Boot+%2B+React+%2B+MySQL" />
+</div>
+# 🛍️ ShopHub
 
-## Tech Stack
-- **Backend:** Spring Boot 3.2.5, Java 17, Spring Security, JPA, MySQL 8.0, JWT
-- **Frontend:** React 19, Vite, Tailwind CSS, Framer Motion, React Router, Axios
+**Full-stack E-Commerce & Order Management System**
 
-## Features
-- JWT authentication with role-based access (Customer / Trader)
-- Product management with image upload
-- Multi-step checkout wizard
-- Order lifecycle tracking (Pending to Delivered)
-- Trader dashboard with revenue stats
-- Dark / light mode
-- Animated success modals
+A modern marketplace where independent traders list products and customers browse, order, and pay.
 
-## Getting Started
-\\\ash
-git clone git@github.com:eddy-hash/Ecommerce.git
-cd Ecommerce
+## ✨ Features
+- 🔐 JWT authentication
+- 📦 Product management with image upload
+- 🛍️ Multi-step checkout
+- 📋 Order lifecycle tracking
+- 📊 Trader dashboard
+- 🌗 Dark mode
 
-# Backend
-cd Backend
-mvn spring-boot:run
-
-# Frontend (new terminal)
-cd Frontend
-npm install
-npm run dev
-\\\
-
-Open http://localhost:3000
-
-## License
-MIT
+## 🛠️ Tech Stack
+- **Backend:** Spring Boot 3.2.5, Java 17, MySQL 8.0, JWT
+- **Frontend:** React 19, Vite, Tailwind CSS, Framer Motion
