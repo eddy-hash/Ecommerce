@@ -103,9 +103,27 @@ public class AdminController {
         users.deleteById(id);
     }
 
+    // ---------- PRODUCTS ----------
+
     @GetMapping("/products")
-    public List<Product> allProducts() {
-        return products.findAll();
+    public List<Map<String, Object>> allProducts() {
+        return products.findAll().stream().map(p -> {
+            Map<String, Object> m = new HashMap<>();
+            m.put("id", p.getId());
+            m.put("name", p.getName());
+            m.put("description", p.getDescription());
+            m.put("price", p.getPrice());
+            m.put("stock", p.getStock());
+            m.put("active", p.getActive());
+            m.put("imageUrl", p.getImageUrl());
+            m.put("createdAt", p.getCreatedAt());
+            m.put("categoryId",   p.getCategory() != null ? p.getCategory().getId()   : null);
+            m.put("categoryName", p.getCategory() != null ? p.getCategory().getName() : null);
+            m.put("traderId",     p.getTrader()   != null ? p.getTrader().getId()     : null);
+            m.put("traderName",   p.getTrader()   != null ? p.getTrader().getName()   : null);
+            m.put("colors", p.getColors() != null ? List.copyOf(p.getColors()) : List.of());
+            return m;
+        }).toList();
     }
 
     // SOFT DELETE — admin marks product inactive
@@ -116,16 +134,31 @@ public class AdminController {
         products.save(p);
     }
 
-    // Admin can reactivate any product
+    // Admin can reactivate any product — returns a plain map to avoid entity serialization
     @PostMapping("/products/{id}/reactivate")
-    public Product reactivateProduct(@PathVariable Long id) {
+    public Map<String, Object> reactivateProduct(@PathVariable Long id) {
         Product p = products.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found"));
         p.setActive(true);
-        return products.save(p);
+        products.save(p);
+        Map<String, Object> m = new HashMap<>();
+        m.put("id", p.getId());
+        m.put("active", p.getActive());
+        return m;
     }
 
+    // orders
+
     @GetMapping("/orders")
-    public List<Order> allOrders() {
-        return orders.findAll();
+    public List<Map<String, Object>> allOrders() {
+        return orders.findAll().stream().map(o -> {
+            Map<String, Object> m = new HashMap<>();
+            m.put("id", o.getId());
+            m.put("status", o.getStatus() != null ? o.getStatus().name() : null);
+            m.put("totalAmount", o.getTotalAmount());
+            m.put("createdAt", o.getCreatedAt());
+            m.put("customerId",  o.getCustomer() != null ? o.getCustomer().getId()  : null);
+            m.put("customerName", o.getCustomer() != null ? o.getCustomer().getName() : null);
+            return m;
+        }).toList();
     }
 }
