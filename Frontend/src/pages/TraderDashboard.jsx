@@ -37,7 +37,6 @@ export default function TraderDashboard() {
     }
   }, [])
 
-  // Refetch on mount + whenever location changes
   useEffect(() => { load() }, [load, location.key])
 
   const handleDelete = async (id) => {
@@ -45,7 +44,7 @@ export default function TraderDashboard() {
     try {
       await productApi.remove(id)
       toast.success('Product deleted')
-      load()  // refresh immediately
+      load()
     } catch (e) {
       toast.error('Failed to delete')
     }
@@ -170,17 +169,25 @@ export default function TraderDashboard() {
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
           {products.map((p, i) => (
-            <motion.div key={p.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
-              className="card overflow-hidden">
-              <div className="aspect-square sm:aspect-video bg-gray-100 dark:bg-gray-700 overflow-hidden">
+            <motion.div
+              key={p.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.05 }}
+              className="card overflow-hidden !p-0 flex flex-col"
+            >
+              {/* Image — natural size, capped height, no frame, no zoom */}
+              <div className="flex items-center justify-center p-3">
                 <img
                   src={resolveProductImage(p)}
                   alt={p.name}
-                  className="w-full h-full object-contain p-2"
+                  loading="lazy"
+                  className="w-full max-h-44 object-contain"
                   onError={(e) => { e.currentTarget.src = '/placeholders/product.svg' }}
                 />
               </div>
-              <div className="p-4">
+
+              <div className="p-4 pt-0 flex flex-col flex-1">
                 <h3 className="font-semibold text-gray-900 dark:text-white truncate">{p.name}</h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400">{p.categoryName || 'Uncategorized'}</p>
                 <div className="flex items-center justify-between mt-3">
@@ -188,12 +195,17 @@ export default function TraderDashboard() {
                   <span className="text-sm text-gray-500 dark:text-gray-400">Stock: {p.stock}</span>
                 </div>
                 <div className="flex gap-2 mt-4">
-                  <Link to={`/trader/products/${p.id}/edit`}
-                    className="flex-1 btn-secondary text-sm flex items-center justify-center gap-1">
+                  <Link
+                    to={`/trader/products/${p.id}/edit`}
+                    className="flex-1 btn-secondary text-sm flex items-center justify-center gap-1"
+                  >
                     <FiEdit /> Edit
                   </Link>
-                  <button onClick={() => handleDelete(p.id)}
-                    className="px-3 py-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition">
+                  <button
+                    onClick={() => handleDelete(p.id)}
+                    className="px-3 py-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition"
+                    aria-label={`Delete ${p.name}`}
+                  >
                     <FiTrash2 />
                   </button>
                 </div>
