@@ -6,11 +6,13 @@ import toast from 'react-hot-toast'
 import { productApi } from '../api/productApi'
 import { orderApi } from '../api/orderApi'
 import { resolveProductImage } from '../utils/images'
-import { formatTZS } from '../utils/currency'
+import { useCurrency } from '../context/CurrencyContext'
 import Spinner from '../components/Spinner'
+import VerifiedBadge from '../components/VerifiedBadge'
 import EmptyState from '../components/EmptyState'
 
 export default function TraderDashboard() {
+  const { format } = useCurrency()
   const location = useLocation()
   const [products, setProducts] = useState([])
   const [stats, setStats] = useState(null)
@@ -76,7 +78,7 @@ export default function TraderDashboard() {
             </div>
             <div>
               <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">Revenue</p>
-              <p className="text-xl font-bold text-gray-900 dark:text-white">{formatTZS(stats?.totalRevenue || 0)}</p>
+              <p className="text-xl font-bold text-gray-900 dark:text-white">{format(stats?.totalRevenue || 0)}</p>
             </div>
           </div>
         </motion.div>
@@ -148,7 +150,7 @@ export default function TraderDashboard() {
                   <p className="text-xs text-gray-500 dark:text-gray-400">{new Date(o.createdAt).toLocaleString()}</p>
                 </div>
                 <div className="flex items-center gap-4">
-                  <span className="font-bold text-brand-600">{formatTZS(o.totalAmount)}</span>
+                  <span className="font-bold text-brand-600">{format(o.totalAmount)}</span>
                   <span className="text-xs font-medium px-2 py-1 rounded bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">{o.status}</span>
                 </div>
               </div>
@@ -182,7 +184,7 @@ export default function TraderDashboard() {
                 <h3 className="font-semibold text-gray-900 dark:text-white truncate">{p.name}</h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400">{p.categoryName || 'Uncategorized'}</p>
                 <div className="flex items-center justify-between mt-3">
-                  <span className="text-lg font-bold text-brand-600">{formatTZS(p.price)}</span>
+                  <span className="text-lg font-bold text-brand-600">{format(p.price)}</span>
                   <span className="text-sm text-gray-500 dark:text-gray-400">Stock: {p.stock}</span>
                 </div>
                 <div className="flex gap-2 mt-4">

@@ -6,7 +6,7 @@ import Wizard from '../components/Wizard'
 import FloatingInput from '../components/FloatingInput'
 import { orderApi } from '../api/orderApi'
 import { useCart } from '../context/CartContext'
-import { formatTZS } from '../utils/currency'
+import { useCurrency } from '../context/CurrencyContext'
 
 function ShippingStep({ data, update }) {
   return (
@@ -51,13 +51,13 @@ function ReviewStep({ data }) {
           {items.map((i) => (
             <div key={i.id} className="flex justify-between text-sm">
               <span className="text-gray-700 dark:text-gray-300">{i.name} × {i.quantity}</span>
-              <span className="font-medium text-gray-900 dark:text-white">{formatTZS(i.price * i.quantity)}</span>
+              <span className="font-medium text-gray-900 dark:text-white">{format(i.price * i.quantity)}</span>
             </div>
           ))}
         </div>
         <div className="border-t border-gray-200 dark:border-gray-700 mt-3 pt-3 flex justify-between font-bold text-lg">
           <span className="text-gray-900 dark:text-white">Total</span>
-          <span className="text-brand-600">{formatTZS(total)}</span>
+          <span className="text-brand-600">{format(total)}</span>
         </div>
       </div>
       <div className="grid grid-cols-2 gap-6 text-sm">
@@ -88,6 +88,7 @@ function ConfirmationStep() {
 
 export default function Checkout() {
   const navigate = useNavigate()
+  const { format } = useCurrency()
   const { items, total, clearCart } = useCart()
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
@@ -141,7 +142,7 @@ export default function Checkout() {
     <div className="min-h-[80vh] py-12 px-4">
       <h1 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-2">Checkout</h1>
       <p className="text-center text-gray-500 dark:text-gray-400 mb-10">
-        Total: <span className="font-bold text-brand-600">{formatTZS(total)}</span>
+        Total: <span className="font-bold text-brand-600">{format(total)}</span>
       </p>
       {error && <div className="max-w-3xl mx-auto mb-4 p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 rounded-lg text-sm">{error}</div>}
       <Wizard steps={steps} onComplete={handleComplete} submitLabel={submitting ? 'Placing...' : 'Place Order'} />

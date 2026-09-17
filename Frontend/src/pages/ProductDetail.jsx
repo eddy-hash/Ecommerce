@@ -8,8 +8,10 @@ import { productApi } from '../api/productApi'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 import { resolveProductImage } from '../utils/images'
-import { formatTZS } from '../utils/currency'
+import { useCurrency } from '../context/CurrencyContext'
 import Spinner from '../components/Spinner'
+import VerifiedBadge from '../components/VerifiedBadge'
+import Avatar from '../components/Avatar'
 import EmptyState from '../components/EmptyState'
 
 export default function ProductDetail() {
@@ -17,6 +19,7 @@ export default function ProductDetail() {
   const { id } = useParams()
   const navigate = useNavigate()
   const { user } = useAuth()
+  const { format } = useCurrency()
   const { addItem } = useCart()
   const [product, setProduct] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -61,11 +64,11 @@ export default function ProductDetail() {
           <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-500 dark:text-gray-400 flex-wrap">
             <FiTag /> <span>{product.categoryName || t('product.uncategorized')}</span>
             <span className="mx-1">•</span>
-            <FiPackage /> <span>{t('product.soldBy')} {product.traderName}</span>
+            <FiPackage /> <span>{t('product.soldBy')}</span> <Avatar user={{ name: product.traderName, verified: product.traderVerified }} size="xs" showBadge /> <span>{product.traderName}</span>
           </div>
 
           <h1 className="text-2xl sm:text-4xl font-bold text-gray-900 dark:text-white mt-2 sm:mt-3">{product.name}</h1>
-          <p className="text-2xl sm:text-3xl font-bold text-brand-600 mt-3 sm:mt-4">{formatTZS(product.price)}</p>
+          <p className="text-2xl sm:text-3xl font-bold text-brand-600 mt-3 sm:mt-4">{format(product.price)}</p>
 
           <span className={`mt-3 inline-flex w-fit text-xs px-3 py-1 rounded-full font-medium ${
             inStock ? 'bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300' : 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300'

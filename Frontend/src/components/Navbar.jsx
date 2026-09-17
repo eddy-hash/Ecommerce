@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext'
 import { useTheme } from '../context/ThemeContext'
 import LocaleSwitcher from './LocaleSwitcher'
 import Avatar from './Avatar'
+import VerifiedBadge from './VerifiedBadge'
 
 export default function Navbar({ onMenuClick }) {
   const { user } = useAuth()
@@ -28,24 +29,20 @@ export default function Navbar({ onMenuClick }) {
             <div className="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center flex-shrink-0">
               <FiPackage className="text-white w-4 h-4" />
             </div>
-            <span className="text-base sm:text-xl font-bold text-gray-900 dark:text-white truncate">
-              ShopHub
-            </span>
+            <span className="text-base sm:text-xl font-bold text-gray-900 dark:text-white truncate">ShopHub</span>
           </Link>
         </div>
 
-        {/* Center: public links (desktop only) */}
+        {/* Center: nav links */}
         <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-700 dark:text-gray-300">
           <Link to="/categories" className="hover:text-brand-600 transition">{t('nav.categories')}</Link>
           <Link to="/traders" className="hover:text-brand-600 transition">{t('nav.traders')}</Link>
         </div>
 
-        {/* Right: locale + theme + avatar/login */}
+        {/* Right: locale + theme + user */}
         <div className="flex items-center gap-1 sm:gap-2">
-          {/* Language + currency switcher */}
           <LocaleSwitcher />
 
-          {/* Theme toggle */}
           <motion.button
             whileTap={{ scale: 0.9 }}
             onClick={toggleTheme}
@@ -55,23 +52,34 @@ export default function Navbar({ onMenuClick }) {
             {theme === 'dark' ? <FiSun className="w-5 h-5" /> : <FiMoon className="w-5 h-5" />}
           </motion.button>
 
-          {/* User / Login */}
           {user ? (
-            <Link to="/profile" aria-label="Profile" className="active:scale-95 transition-transform">
-              <Avatar user={user} size="sm" />
-            </Link>
+            <>
+              {user.role === 'ADMIN' && (
+                <Link
+                  to="/admin"
+                  className="hidden sm:inline-block text-sm font-medium text-red-600 dark:text-red-400 hover:text-red-700 px-2"
+                >
+                  Admin
+                </Link>
+              )}
+              <Link
+                to="/profile"
+                className="flex items-center gap-2 pl-1 pr-2 py-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 active:scale-95 transition"
+                aria-label="Profile"
+              >
+                <Avatar user={user} size="sm" />
+                <span className="hidden sm:flex items-center gap-1 text-sm font-medium text-gray-700 dark:text-gray-200">
+                  {user.name}
+                  {user.verified && <VerifiedBadge size="sm" />}
+                </span>
+              </Link>
+            </>
           ) : (
             <>
-              <Link
-                to="/login"
-                className="hidden xs:inline-block text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-brand-600 px-2"
-              >
+              <Link to="/login" className="hidden sm:inline-block text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-brand-600 px-2">
                 {t('nav.login')}
               </Link>
-              <Link
-                to="/register"
-                className="btn-primary text-xs sm:text-sm px-3 py-1.5 sm:px-4 sm:py-2"
-              >
+              <Link to="/register" className="btn-primary text-xs sm:text-sm px-3 py-1.5 sm:px-4 sm:py-2">
                 {t('nav.register')}
               </Link>
             </>

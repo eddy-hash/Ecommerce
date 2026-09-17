@@ -1,6 +1,7 @@
 import { FiUser } from 'react-icons/fi'
+import VerifiedBadge from './VerifiedBadge'
 
-export default function Avatar({ user, size = 'md', className = '' }) {
+export default function Avatar({ user, size = 'md', className = '', showBadge = false }) {
   const sizes = {
     xs: 'w-6 h-6 text-xs',
     sm: 'w-8 h-8 text-sm',
@@ -11,20 +12,29 @@ export default function Avatar({ user, size = 'md', className = '' }) {
 
   const initial = user?.name?.trim()?.[0]?.toUpperCase() || '?'
 
-  if (user?.avatarUrl) {
-    return (
-      <img
-        src={`/api/files/${user.avatarUrl}`}
-        alt={user.name}
-        className={`${sizes[size]} rounded-full object-cover ring-2 ring-white dark:ring-gray-800 ${className}`}
-        onError={(e) => { e.currentTarget.style.display = 'none' }}
-      />
-    )
-  }
+  const imageContent = user?.avatarUrl ? (
+    <img
+      src={`/api/files/${user.avatarUrl}`}
+      alt={user.name}
+      className={`${sizes[size]} rounded-full object-cover ring-2 ring-white dark:ring-gray-800`}
+      onError={(e) => { e.currentTarget.style.display = 'none' }}
+    />
+  ) : (
+    <div className={`${sizes[size]} rounded-full bg-brand-600 text-white flex items-center justify-center font-bold`}>
+      {initial || <FiUser />}
+    </div>
+  )
+
+  const isVerified = showBadge && user?.verified
 
   return (
-    <div className={`${sizes[size]} rounded-full bg-brand-600 text-white flex items-center justify-center font-bold ${className}`}>
-      {initial || <FiUser />}
+    <div className={`relative inline-block ${className}`}>
+      {imageContent}
+      {isVerified && (
+        <span className="absolute -bottom-0.5 -right-0.5">
+          <VerifiedBadge size={size === 'xl' ? 'lg' : 'sm'} />
+        </span>
+      )}
     </div>
   )
 }

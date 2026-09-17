@@ -7,7 +7,7 @@ import FloatingInput from '../components/FloatingInput'
 import ImageUploader from '../components/ImageUploader'
 import { productApi } from '../api/productApi'
 import { categoryApi } from '../api/categoryApi'
-import { formatTZS } from '../utils/currency'
+import { useCurrency } from '../context/CurrencyContext'
 
 function BasicStep({ data, update, categories }) {
   return (
@@ -88,6 +88,7 @@ function OptionsStep({ data, update }) {
 }
 
 function ReviewStep({ data }) {
+  const { format } = useCurrency()
   return (
     <div className="card dark:bg-gray-800 dark:border-gray-700 p-4 space-y-3">
       <h3 className="font-semibold text-gray-900 dark:text-white">Summary</h3>
@@ -97,7 +98,7 @@ function ReviewStep({ data }) {
       <dl className="space-y-2 text-sm">
         <div className="flex justify-between"><dt className="text-gray-500 dark:text-gray-400">Name</dt><dd className="font-medium">{data.name}</dd></div>
         <div className="flex justify-between"><dt className="text-gray-500 dark:text-gray-400">Category</dt><dd className="font-medium">{data.categoryId || '—'}</dd></div>
-        <div className="flex justify-between"><dt className="text-gray-500 dark:text-gray-400">Price</dt><dd className="font-medium">{formatTZS(data.price)}</dd></div>
+        <div className="flex justify-between"><dt className="text-gray-500 dark:text-gray-400">Price</dt><dd className="font-medium">{format(data.price)}</dd></div>
         <div className="flex justify-between"><dt className="text-gray-500 dark:text-gray-400">Stock</dt><dd className="font-medium">{data.stock}</dd></div>
         <div className="flex justify-between"><dt className="text-gray-500 dark:text-gray-400">Colors</dt><dd className="font-medium">{(data.colors || []).join(', ') || '—'}</dd></div>
       </dl>

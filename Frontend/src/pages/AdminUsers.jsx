@@ -1,0 +1,159 @@
+import { useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
+import { FiCheck, FiX, FiTrash2, FiSearch, FiUserPlus } from 'react-icons/fi'
+import toast from 'react-hot-toast'
+import { adminApi } from '../api/adminApi'
+import Spinner from '../components/Spinner'
+import VerifiedBadge from '../components/VerifiedBadge'
+import Avatar from '../components/Avatar'
+
+export default function AdminUsers() {
+  const [users, setUsers] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [filter, setFilter] = useState('all')
+  const [search, setSearch] = useState('')
+
+  const load = () => {
+    setLoading(true)
+    adminApi.users().then(setUsers).finally(() => setLoading(false))
+  }
+
+  useEffect(() => { load() }, [])
+
+  const toggleVerify = async (u) => {
+    try {
+      await adminApi.verify(u.id)
+      toast.success(`${u.name} verification toggled`)
+      load()
+    } catch (e) {
+      toast.error('Failed to toggle verification')
+    }
+  }
+
+  const deleteUser = async (u) => {
+    if (!confirm(`Delete ${u.name}? This cannot be undone.`)) return
+    try {
+      await adminApi.deleteUser(u.id)
+      toast.success('User deleted')
+      load()
+    } catch (e) {
+      toast.error('Failed to delete user')
+    }
+  }
+
+  if (loading) return <Spinner size="lg" />
+
+  const filtered = users
+    .filter(u => filter === 'all' || u.role.toLowerCase() === filter)
+    .filter(u => u.name.toLowerCase().includes(search.toLowerCase()) || u.email.toLowerCase().includes(search.toLowerCase()))
+
+  const counts = {
+    all: users.length,
+    customer: users.filter(u => u.role === 'CUSTOMER').length,
+    trader: users.filter(u => u.role === 'TRADER').length,
+    admin: users.filter(u => u.role === 'ADMIN').length,
+  }
+
+  const roleBadge = (role) => {
+    const styles = {
+      TRADER: 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300',
+      ADMIN:  'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300',
+      CUSTOMER: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300',
+    }
+    return (
+      <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${styles[role] || 'bg-gray-100'}`}>
+        {role}
+      </span>
+    )
+  }
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
+      <div className="flex items-center justify-between flex-wrap gap-4">
+        <div>
+          <h1 className="text-2xl sm:text-4xl font-bold text-gray-900 dark:text-white">Users</h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{users.length} total · {counts.trader} traders · {counts.customer} customers</p>
+        </div>
+      </div>
+
+      {/* Search */}
+      <div className="mt-4 relative">
+        <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search by name or email..."
+          className="input-field pl-10"
+        />
+      </div>
+
+      {/* Filters */}
+      <div className="flex gap-2 mt-3 flex-wrap">
+        {['all', 'customer', 'trader', 'admin'].map(f => (
+          <button
+            key={f}
+            onClick={() => setFilter(f)}
+            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
+              filter === f ? 'bg-brand-600 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+            }`}
+          >
+            {f.charAt(0).toUpperCase() + f.slice(1)} ({counts[f]})
+          </button>
+        ))}
+      </div>
+
+      {/* Users list */}
+      <div className="mt-6 space-y-2">
+        {filtered.length === 0 && (
+          <div className="card p-8 text-center text-gray-500 dark:text-gray-400">
+            No users match your search
+          </div>
+        )}
+        {filtered.map((u, i) => (
+          <motion.div
+            key={u.id}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.02 }}
+            className="card p-3 sm:p-4 flex items-center gap-3"
+          >
+            <Avatar user={u} size="md" />
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <p className="font-semibold text-sm sm:text-base text-gray-900 dark:text-white truncate">{u.name}</p>
+                {u.verified && <VerifiedBadge size="sm" />}
+                {roleBadge(u.role)}
+              </div>
+              <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 truncate mt-0.5">{u.email}</p>
+            </div>
+
+            {u.role === 'TRADER' && (
+              <button
+                onClick={() => toggleVerify(u)}
+                className={`px-3 py-1.5 rounded-lg text-sm font-medium transition flex items-center gap-1 whitespace-nowrap ${
+                  u.verified
+                    ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 hover:bg-yellow-200'
+                    : 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 hover:bg-green-200'
+                }`}
+                title={u.verified ? 'Remove verification' : 'Verify this trader'}
+              >
+                {u.verified ? <><FiX className="w-4 h-4" /> Unverify</> : <><FiCheck className="w-4 h-4" /> Verify</>}
+              </button>
+            )}
+
+            {u.role !== 'ADMIN' && (
+              <button
+                onClick={() => deleteUser(u)}
+                className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition active:scale-95"
+                title="Delete user"
+              >
+                <FiTrash2 className="w-4 h-4" />
+              </button>
+            )}
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  )
+}

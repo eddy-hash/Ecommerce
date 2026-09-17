@@ -22,7 +22,7 @@ export default function Login() {
     try {
       const data = await authApi.login({ email, password })
       loginUser(data)
-      navigate(data.role === 'TRADER' ? '/trader/dashboard' : '/')
+      if (data.role === 'TRADER') navigate('/trader/dashboard'); else if (data.role === 'ADMIN') navigate('/admin'); else navigate('/')
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed')
     } finally { setLoading(false) }

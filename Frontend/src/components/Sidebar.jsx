@@ -3,9 +3,11 @@ import { AnimatePresence, motion } from 'framer-motion'
 import {
   FiX, FiHome, FiGrid, FiUsers, FiShoppingBag, FiShoppingCart,
   FiUser, FiLogIn, FiLogOut, FiPackage, FiBarChart2, FiPlus,
-  FiSettings, FiSun, FiMoon
+  FiSun, FiMoon
 } from 'react-icons/fi'
+import { useTranslation } from 'react-i18next'
 import Avatar from './Avatar'
+import VerifiedBadge from './VerifiedBadge'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
 import { useTheme } from '../context/ThemeContext'
@@ -14,6 +16,7 @@ export default function Sidebar({ isOpen, onClose }) {
   const { user, logout } = useAuth()
   const { cartCount } = useCart()
   const { theme, toggleTheme } = useTheme()
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -45,9 +48,7 @@ export default function Sidebar({ isOpen, onClose }) {
         {badge > 0 && (
           <span className={`ml-auto text-xs font-bold px-2 py-0.5 rounded-full ${
             active ? 'bg-white text-brand-600' : 'bg-brand-600 text-white'
-          }`}>
-            {badge}
-          </span>
+          }`}>{badge}</span>
         )}
       </Link>
     )
@@ -65,19 +66,14 @@ export default function Sidebar({ isOpen, onClose }) {
         <>
           <motion.div
             key="backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             className="fixed inset-0 bg-black/50 z-40"
             onClick={onClose}
           />
-
           <motion.aside
             key="panel"
-            initial={{ x: '-100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '-100%' }}
+            initial={{ x: '-100%' }} animate={{ x: 0 }} exit={{ x: '-100%' }}
             transition={{ type: 'spring', stiffness: 400, damping: 40 }}
             className="fixed top-0 left-0 h-full w-80 max-w-[85vw] bg-white dark:bg-gray-800 shadow-2xl z-50 flex flex-col"
           >
@@ -91,7 +87,7 @@ export default function Sidebar({ isOpen, onClose }) {
               <button
                 onClick={onClose}
                 className="p-2 rounded-lg text-gray-500 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
-                aria-label="Close menu"
+                aria-label="Close"
               >
                 <FiX className="w-5 h-5" />
               </button>
@@ -102,7 +98,10 @@ export default function Sidebar({ isOpen, onClose }) {
                 <div className="flex items-center gap-3">
                   <Avatar user={user} size="lg" />
                   <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-gray-900 dark:text-white truncate">{user.name}</p>
+                    <div className="flex items-center gap-1.5">
+                      <p className="font-semibold text-gray-900 dark:text-white truncate">{user.name}</p>
+                      {user.verified && <VerifiedBadge size="sm" />}
+                    </div>
                     <p className="text-sm text-gray-500 dark:text-gray-400 truncate">{user.email}</p>
                   </div>
                 </div>
@@ -117,45 +116,45 @@ export default function Sidebar({ isOpen, onClose }) {
               </div>
             ) : (
               <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">Welcome to ShopHub</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">{t('sidebar.welcome')}</p>
                 <div className="flex gap-2">
-                  <Link to="/login" onClick={onClose} className="flex-1 btn-secondary text-center text-sm">Login</Link>
-                  <Link to="/register" onClick={onClose} className="flex-1 btn-primary text-center text-sm">Sign up</Link>
+                  <Link to="/login" onClick={onClose} className="flex-1 btn-secondary text-center text-sm">{t('nav.login')}</Link>
+                  <Link to="/register" onClick={onClose} className="flex-1 btn-primary text-center text-sm">{t('nav.register')}</Link>
                 </div>
               </div>
             )}
 
             <nav className="flex-1 overflow-y-auto p-3">
-              <SectionTitle>Shop</SectionTitle>
+              <SectionTitle>{t('nav.shop')}</SectionTitle>
               <div className="space-y-1">
-                <NavItem to="/" icon={FiHome} label="Home" />
-                <NavItem to="/categories" icon={FiGrid} label="Categories" />
-                <NavItem to="/traders" icon={FiUsers} label="Traders" />
+                <NavItem to="/" icon={FiHome} label={t('nav.home')} />
+                <NavItem to="/categories" icon={FiGrid} label={t('nav.categories')} />
+                <NavItem to="/traders" icon={FiUsers} label={t('nav.traders')} />
               </div>
 
               {user?.role === 'CUSTOMER' && (
                 <>
-                  <SectionTitle>My Account</SectionTitle>
+                  <SectionTitle>{t('nav.account')}</SectionTitle>
                   <div className="space-y-1">
-                    <NavItem to="/orders" icon={FiShoppingBag} label="My Orders" />
-                    <NavItem to="/profile" icon={FiUser} label="Profile" />
+                    <NavItem to="/orders" icon={FiShoppingBag} label={t('nav.myOrders')} />
+                    <NavItem to="/profile" icon={FiUser} label={t('nav.profile')} />
                   </div>
                 </>
               )}
 
               {user?.role === 'TRADER' && (
                 <>
-                  <SectionTitle>Trader Hub</SectionTitle>
+                  <SectionTitle>{t('nav.traderHub')}</SectionTitle>
                   <div className="space-y-1">
-                    <NavItem to="/trader/dashboard" icon={FiBarChart2} label="Dashboard" />
-                    <NavItem to="/trader/orders" icon={FiShoppingBag} label="Incoming Orders" />
-                    <NavItem to="/trader/products/new" icon={FiPlus} label="Add Product" />
-                    <NavItem to="/profile" icon={FiUser} label="Profile" />
+                    <NavItem to="/trader/dashboard" icon={FiBarChart2} label={t('nav.dashboard')} />
+                    <NavItem to="/trader/orders" icon={FiShoppingBag} label={t('nav.incomingOrders')} />
+                    <NavItem to="/trader/products/new" icon={FiPlus} label={t('nav.addProduct')} />
+                    <NavItem to="/profile" icon={FiUser} label={t('nav.profile')} />
                   </div>
                 </>
               )}
 
-              <SectionTitle>Quick Access</SectionTitle>
+              <SectionTitle>{t('nav.quickAccess')}</SectionTitle>
               <div className="space-y-1">
                 <Link
                   to="/checkout"
@@ -163,11 +162,9 @@ export default function Sidebar({ isOpen, onClose }) {
                   className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
                 >
                   <FiShoppingCart className="w-5 h-5" />
-                  <span className="font-medium">Cart</span>
+                  <span className="font-medium">{t('nav.cart')}</span>
                   {cartCount > 0 && (
-                    <span className="ml-auto text-xs font-bold bg-brand-600 text-white px-2 py-0.5 rounded-full">
-                      {cartCount}
-                    </span>
+                    <span className="ml-auto text-xs font-bold bg-brand-600 text-white px-2 py-0.5 rounded-full">{cartCount}</span>
                   )}
                 </Link>
                 <button
@@ -175,7 +172,7 @@ export default function Sidebar({ isOpen, onClose }) {
                   className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
                 >
                   {theme === 'dark' ? <FiSun className="w-5 h-5" /> : <FiMoon className="w-5 h-5" />}
-                  <span className="font-medium">{theme === 'dark' ? 'Light mode' : 'Dark mode'}</span>
+                  <span className="font-medium">{theme === 'dark' ? t('nav.lightMode') : t('nav.darkMode')}</span>
                 </button>
               </div>
             </nav>
@@ -187,7 +184,7 @@ export default function Sidebar({ isOpen, onClose }) {
                   className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition"
                 >
                   <FiLogOut className="w-5 h-5" />
-                  <span className="font-medium">Logout</span>
+                  <span className="font-medium">{t('nav.logout')}</span>
                 </button>
               ) : (
                 <Link
@@ -196,7 +193,7 @@ export default function Sidebar({ isOpen, onClose }) {
                   className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-brand-600 hover:bg-brand-50 dark:hover:bg-brand-900/20 transition"
                 >
                   <FiLogIn className="w-5 h-5" />
-                  <span className="font-medium">Sign in</span>
+                  <span className="font-medium">{t('nav.login')}</span>
                 </Link>
               )}
               <p className="text-xs text-gray-400 dark:text-gray-500 text-center mt-3">

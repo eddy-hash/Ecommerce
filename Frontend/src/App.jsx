@@ -1,14 +1,17 @@
 import { useState } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { Toaster } from 'react-hot-toast'
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { AnimatePresence } from 'framer-motion'
 import { AuthProvider } from './context/AuthContext'
 import { CartProvider } from './context/CartContext'
 import { ThemeProvider } from './context/ThemeContext'
+import { CurrencyProvider } from './context/CurrencyContext'
+import AnimatedToast from './components/AnimatedToast'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import CartDrawer from './components/CartDrawer'
 import Sidebar from './components/Sidebar'
 import ProtectedRoute from './components/ProtectedRoute'
+import PageTransition from './components/PageTransition'
 
 import Home from './pages/Home'
 import Login from './pages/Login'
@@ -25,7 +28,44 @@ import TraderOrders from './pages/TraderOrders'
 import AddProduct from './pages/AddProduct'
 import EditProduct from './pages/EditProduct'
 import Profile from './pages/Profile'
+import AdminDashboard from './pages/AdminDashboard'
+import AdminUsers from './pages/AdminUsers'
+import AdminProducts from './pages/AdminProducts'
+import AdminOrders from './pages/AdminOrders'
 import NotFound from './pages/NotFound'
+
+function AnimatedRoutes() {
+  const location = useLocation()
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={<PageTransition><Home /></PageTransition>} />
+        <Route path="/login" element={<PageTransition><Login /></PageTransition>} />
+        <Route path="/register" element={<PageTransition><Register /></PageTransition>} />
+        <Route path="/categories" element={<PageTransition><Categories /></PageTransition>} />
+        <Route path="/categories/:id" element={<PageTransition><CategoryProducts /></PageTransition>} />
+        <Route path="/traders" element={<PageTransition><Traders /></PageTransition>} />
+        <Route path="/traders/:id/products" element={<PageTransition><TraderProducts /></PageTransition>} />
+        <Route path="/products/:id" element={<PageTransition><ProductDetail /></PageTransition>} />
+        <Route path="/profile" element={<PageTransition><ProtectedRoute><Profile /></ProtectedRoute></PageTransition>} />
+        <Route path="/checkout" element={<PageTransition><ProtectedRoute role="CUSTOMER"><Checkout /></ProtectedRoute></PageTransition>} />
+        <Route path="/orders" element={<PageTransition><ProtectedRoute role="CUSTOMER"><Orders /></ProtectedRoute></PageTransition>} />
+        <Route path="/trader/dashboard" element={<PageTransition><ProtectedRoute role="TRADER"><TraderDashboard /></ProtectedRoute></PageTransition>} />
+        <Route path="/trader/orders" element={<PageTransition><ProtectedRoute role="TRADER"><TraderOrders /></ProtectedRoute></PageTransition>} />
+        <Route path="/trader/products/new" element={<PageTransition><ProtectedRoute role="TRADER"><AddProduct /></ProtectedRoute></PageTransition>} />
+        <Route path="/trader/products/:id/edit" element={<PageTransition><ProtectedRoute role="TRADER"><EditProduct /></ProtectedRoute></PageTransition>} />
+
+        {/* ===== ADMIN ROUTES ===== */}
+        <Route path="/admin" element={<PageTransition><ProtectedRoute role="ADMIN"><AdminDashboard /></ProtectedRoute></PageTransition>} />
+        <Route path="/admin/users" element={<PageTransition><ProtectedRoute role="ADMIN"><AdminUsers /></ProtectedRoute></PageTransition>} />
+        <Route path="/admin/products" element={<PageTransition><ProtectedRoute role="ADMIN"><AdminProducts /></ProtectedRoute></PageTransition>} />
+        <Route path="/admin/orders" element={<PageTransition><ProtectedRoute role="ADMIN"><AdminOrders /></ProtectedRoute></PageTransition>} />
+
+        <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
+      </Routes>
+    </AnimatePresence>
+  )
+}
 
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -34,49 +74,20 @@ export default function App() {
     <ThemeProvider>
       <BrowserRouter>
         <AuthProvider>
-          <CartProvider>
-            <Toaster position="bottom-center" toastOptions={{ style: { background: "var(--toast-bg, #fff)", color: "var(--toast-color, #111)" }, className: "dark:!bg-gray-800 dark:!text-white" }} />
-            <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors">
-              <Navbar onMenuClick={() => setSidebarOpen(true)} />
-              <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-              <CartDrawer />
-              <main className="flex-1">
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/register" element={<Register />} />
-                  <Route path="/categories" element={<Categories />} />
-                  <Route path="/categories/:id" element={<CategoryProducts />} />
-                  <Route path="/traders" element={<Traders />} />
-                  <Route path="/traders/:id/products" element={<TraderProducts />} />
-                  <Route path="/products/:id" element={<ProductDetail />} />
-                  <Route path="/profile" element={
-                    <ProtectedRoute><Profile /></ProtectedRoute>
-                  } />
-                  <Route path="/checkout" element={
-                    <ProtectedRoute role="CUSTOMER"><Checkout /></ProtectedRoute>
-                  } />
-                  <Route path="/orders" element={
-                    <ProtectedRoute role="CUSTOMER"><Orders /></ProtectedRoute>
-                  } />
-                  <Route path="/trader/dashboard" element={
-                    <ProtectedRoute role="TRADER"><TraderDashboard /></ProtectedRoute>
-                  } />
-                  <Route path="/trader/orders" element={
-                    <ProtectedRoute role="TRADER"><TraderOrders /></ProtectedRoute>
-                  } />
-                  <Route path="/trader/products/new" element={
-                    <ProtectedRoute role="TRADER"><AddProduct /></ProtectedRoute>
-                  } />
-                  <Route path="/trader/products/:id/edit" element={
-                    <ProtectedRoute role="TRADER"><EditProduct /></ProtectedRoute>
-                  } />
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </main>
-              <Footer />
-            </div>
-          </CartProvider>
+          <CurrencyProvider>
+            <CartProvider>
+              <AnimatedToast />
+              <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors">
+                <Navbar onMenuClick={() => setSidebarOpen(true)} />
+                <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+                <CartDrawer />
+                <main className="flex-1">
+                  <AnimatedRoutes />
+                </main>
+                <Footer />
+              </div>
+            </CartProvider>
+          </CurrencyProvider>
         </AuthProvider>
       </BrowserRouter>
     </ThemeProvider>

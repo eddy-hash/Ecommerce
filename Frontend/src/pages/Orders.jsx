@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { orderApi } from '../api/orderApi'
 import Spinner from '../components/Spinner'
 import EmptyState from '../components/EmptyState'
-import { formatTZS } from '../utils/currency'
+import { useCurrency } from '../context/CurrencyContext'
 
 const statusColors = {
   PENDING:   'bg-yellow-50 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300',
@@ -18,6 +18,7 @@ const statusColors = {
 
 export default function Orders() {
   const { t } = useTranslation()
+  const { format } = useCurrency()
   const location = useLocation()
   const [orders, setOrders] = useState([])
   const [loading, setLoading] = useState(true)
@@ -64,12 +65,12 @@ export default function Orders() {
                 {o.items.map((it, idx) => (
                   <div key={idx} className="flex justify-between text-sm">
                     <span className="text-gray-700 dark:text-gray-300">{it.productName} × {it.quantity}</span>
-                    <span className="font-medium text-gray-900 dark:text-white">{formatTZS(it.priceAtPurchase)}</span>
+                    <span className="font-medium text-gray-900 dark:text-white">{format(it.priceAtPurchase)}</span>
                   </div>
                 ))}
                 <div className="flex justify-between pt-3 border-t border-gray-200 dark:border-gray-700 font-bold text-lg">
                   <span className="text-gray-900 dark:text-white">{t('cart.total')}</span>
-                  <span className="text-brand-600">{formatTZS(o.totalAmount)}</span>
+                  <span className="text-brand-600">{format(o.totalAmount)}</span>
                 </div>
               </div>
             </motion.div>

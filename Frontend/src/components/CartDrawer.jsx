@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom'
 import { FiX, FiTrash2, FiPlus, FiMinus, FiShoppingBag } from 'react-icons/fi'
 import { useTranslation } from 'react-i18next'
 import { useCart } from '../context/CartContext'
-import { formatTZS } from '../utils/currency'
+import { useCurrency } from '../context/CurrencyContext'
 
 export default function CartDrawer() {
   const { t } = useTranslation()
   const { items, isOpen, setIsOpen, removeItem, updateQty, total } = useCart()
+  const { format } = useCurrency()
 
   return (
     <AnimatePresence>
@@ -55,7 +56,7 @@ export default function CartDrawer() {
                       <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-100 dark:bg-gray-700 rounded-lg flex-shrink-0" />
                       <div className="flex-1 min-w-0">
                         <p className="font-medium text-sm truncate text-gray-900 dark:text-white">{item.name}</p>
-                        <p className="text-brand-600 font-semibold mt-0.5 text-sm">{formatTZS(item.price)}</p>
+                        <p className="text-brand-600 font-semibold mt-0.5 text-sm">{format(item.price)}</p>
                         <div className="flex items-center gap-2 mt-2">
                           <button onClick={() => updateQty(item.id, item.quantity - 1)}
                             className="w-8 h-8 border border-gray-300 dark:border-gray-600 rounded-lg flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-700 active:scale-95 transition">
@@ -79,7 +80,7 @@ export default function CartDrawer() {
                 <div className="p-4 border-t border-gray-200 dark:border-gray-700 space-y-3 safe-bottom">
                   <div className="flex justify-between font-semibold text-lg text-gray-900 dark:text-white">
                     <span>{t('cart.total')}</span>
-                    <span className="text-brand-600">{formatTZS(total)}</span>
+                    <span className="text-brand-600">{format(total)}</span>
                   </div>
                   <Link to="/checkout" onClick={() => setIsOpen(false)}
                     className="block text-center btn-primary py-3.5 text-base font-semibold">
