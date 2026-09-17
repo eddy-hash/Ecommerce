@@ -37,7 +37,7 @@ export default function TraderOrders() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <h1 className="text-4xl font-bold text-gray-900 dark:text-white">Incoming Orders</h1>
+      <h1 className="text-2xl sm:text-4xl font-bold text-gray-900 dark:text-white">Incoming Orders</h1>
       <p className="text-gray-500 dark:text-gray-400 mt-2">{orders.length} order{orders.length !== 1 && 's'}</p>
 
       {orders.length === 0 ? (
@@ -46,7 +46,7 @@ export default function TraderOrders() {
         <div className="space-y-4 mt-8">
           {orders.map((o, i) => (
             <motion.div key={o.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
-              className="card p-6">
+              className="card p-4 sm:p-6">
               <div className="flex items-center justify-between flex-wrap gap-4">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 bg-brand-50 dark:bg-brand-900/30 rounded-xl flex items-center justify-center">

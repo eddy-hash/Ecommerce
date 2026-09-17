@@ -35,7 +35,7 @@ export default function TraderProducts() {
       {products.length === 0 ? (
         <EmptyState title="No products yet" message="This trader hasn't listed any products yet." />
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 mt-10">
           {products.map((p) => <ProductCard key={p.id} product={p} />)}
         </div>
       )}

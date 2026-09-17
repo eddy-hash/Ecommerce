@@ -1,26 +1,20 @@
-import { useEffect, useState } from 'react'
-import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { FiMail, FiLock, FiLogIn, FiCheckCircle } from 'react-icons/fi'
+import { FiMail, FiLock, FiLogIn } from 'react-icons/fi'
+import { useTranslation } from 'react-i18next'
 import { authApi } from '../api/authApi'
 import { useAuth } from '../context/AuthContext'
 import FloatingInput from '../components/FloatingInput'
 
 export default function Login() {
+  const { t } = useTranslation()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
-  const [success, setSuccess] = useState('')
   const [loading, setLoading] = useState(false)
   const { loginUser } = useAuth()
   const navigate = useNavigate()
-  const [params] = useSearchParams()
-
-  useEffect(() => {
-    if (params.get('registered') === '1') {
-      setSuccess('Account created successfully — please sign in.')
-    }
-  }, [params])
 
   const submit = async (e) => {
     e.preventDefault()
@@ -36,27 +30,18 @@ export default function Login() {
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="card dark:bg-gray-800 dark:border-gray-700 w-full max-w-md p-8">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Welcome back</h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-2">Sign in to continue shopping</p>
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="card w-full max-w-md p-6 sm:p-8">
+        <div className="text-center mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">{t('auth.welcomeBack')}</h1>
+          <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 mt-2">{t('auth.signInSubtitle')}</p>
         </div>
 
-        {success && (
-          <div className="mb-4 p-3 bg-green-50 border border-green-200 text-green-800 rounded-lg text-sm flex items-center gap-2">
-            <FiCheckCircle className="w-4 h-4 flex-shrink-0" />
-            {success}
-          </div>
-        )}
-
-        {error && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm">{error}</div>
-        )}
+        {error && <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 rounded-lg text-sm">{error}</div>}
 
         <form onSubmit={submit} className="space-y-4">
           <FloatingInput
             id="email"
-            label="Email address"
+            label={t('auth.email')}
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -66,7 +51,7 @@ export default function Login() {
           />
           <FloatingInput
             id="password"
-            label="Password"
+            label={t('auth.password')}
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -75,12 +60,12 @@ export default function Login() {
             autoComplete="current-password"
           />
           <button type="submit" disabled={loading} className="btn-primary w-full flex items-center justify-center gap-2 py-3">
-            <FiLogIn /> {loading ? 'Signing in...' : 'Sign in'}
+            <FiLogIn /> {loading ? t('auth.signingIn') : t('auth.signIn')}
           </button>
         </form>
 
         <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-6">
-          Don't have an account? <Link to="/register" className="text-brand-600 hover:underline font-medium">Sign up</Link>
+          {t('auth.noAccount')} <Link to="/register" className="text-brand-600 hover:underline font-medium">{t('nav.register')}</Link>
         </p>
       </motion.div>
     </div>

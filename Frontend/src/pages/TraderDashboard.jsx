@@ -55,20 +55,20 @@ export default function TraderDashboard() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
+          <h1 className="text-2xl sm:text-4xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
           <p className="text-gray-500 dark:text-gray-400 mt-2">Manage your business</p>
         </div>
         <div className="flex gap-3">
-          <Link to="/trader/orders" className="btn-secondary flex items-center gap-2">
+          <Link to="/trader/orders" className="btn-secondary flex items-center justify-center gap-2 text-sm sm:text-base">
             <FiShoppingBag /> Incoming Orders
           </Link>
-          <Link to="/trader/products/new" className="btn-primary flex items-center gap-2">
+          <Link to="/trader/products/new" className="btn-primary flex items-center justify-center gap-2 text-sm sm:text-base">
             <FiPlus /> Add Product
           </Link>
         </div>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mt-6 sm:mt-8">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="card p-5">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
@@ -120,7 +120,7 @@ export default function TraderDashboard() {
         </motion.div>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mt-3 sm:mt-4">
         {[
           { label: 'Pending',   value: stats?.pendingOrders || 0,   color: 'text-yellow-600' },
           { label: 'Paid',      value: stats?.paidOrders || 0,      color: 'text-blue-600' },
@@ -166,11 +166,11 @@ export default function TraderDashboard() {
           action={<Link to="/trader/products/new" className="btn-primary">Add your first product</Link>}
         />
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
           {products.map((p, i) => (
             <motion.div key={p.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
               className="card overflow-hidden">
-              <div className="aspect-video bg-gray-100 dark:bg-gray-700 overflow-hidden">
+              <div className="aspect-square sm:aspect-video bg-gray-100 dark:bg-gray-700 overflow-hidden">
                 <img
                   src={resolveProductImage(p)}
                   alt={p.name}

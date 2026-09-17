@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { FiPackage } from 'react-icons/fi'
 import { Link, useLocation } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { orderApi } from '../api/orderApi'
 import Spinner from '../components/Spinner'
 import EmptyState from '../components/EmptyState'
@@ -16,6 +17,7 @@ const statusColors = {
 }
 
 export default function Orders() {
+  const { t } = useTranslation()
   const location = useLocation()
   const [orders, setOrders] = useState([])
   const [loading, setLoading] = useState(true)
@@ -30,36 +32,34 @@ export default function Orders() {
   if (loading) return <Spinner size="lg" />
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <h1 className="text-4xl font-bold text-gray-900 dark:text-white">Your Orders</h1>
-      <p className="text-gray-500 dark:text-gray-400 mt-2">{orders.length} order{orders.length !== 1 && 's'}</p>
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
+      <h1 className="text-2xl sm:text-4xl font-bold text-gray-900 dark:text-white">{t('orders.title')}</h1>
+      <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 mt-1 sm:mt-2">{orders.length} {t('orders.subtitle')}</p>
 
       {orders.length === 0 ? (
         <EmptyState
-          title="No orders yet"
-          message="You haven't placed any orders. Start shopping to see them here."
-          action={<Link to="/categories" className="btn-primary">Browse products</Link>}
+          title={t('orders.noOrders')}
+          message={t('orders.noOrdersDesc')}
+          action={<Link to="/categories" className="btn-primary">{t('orders.browseProducts')}</Link>}
         />
       ) : (
-        <div className="space-y-4 mt-8">
+        <div className="space-y-4 mt-6 sm:mt-8">
           {orders.map((o, i) => (
-            <motion.div key={o.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
-              className="card p-6">
+            <motion.div key={o.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }} className="card p-4 sm:p-6">
               <div className="flex items-center justify-between flex-wrap gap-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-brand-50 dark:bg-brand-900/30 rounded-xl flex items-center justify-center">
-                    <FiPackage className="w-6 h-6 text-brand-600" />
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-brand-50 dark:bg-brand-900/30 rounded-xl flex items-center justify-center">
+                    <FiPackage className="w-5 h-5 sm:w-6 sm:h-6 text-brand-600" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-gray-900 dark:text-white">Order #{o.id}</h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">{new Date(o.createdAt).toLocaleString()}</p>
+                    <h3 className="font-bold text-sm sm:text-base text-gray-900 dark:text-white">{t('orders.order')} #{o.id}</h3>
+                    <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">{new Date(o.createdAt).toLocaleString()}</p>
                   </div>
                 </div>
                 <span className={`px-3 py-1 rounded-full text-xs font-bold ${statusColors[o.status] || 'bg-gray-100'}`}>
                   {o.status}
                 </span>
               </div>
-
               <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 space-y-1">
                 {o.items.map((it, idx) => (
                   <div key={idx} className="flex justify-between text-sm">
@@ -68,7 +68,7 @@ export default function Orders() {
                   </div>
                 ))}
                 <div className="flex justify-between pt-3 border-t border-gray-200 dark:border-gray-700 font-bold text-lg">
-                  <span className="text-gray-900 dark:text-white">Total</span>
+                  <span className="text-gray-900 dark:text-white">{t('cart.total')}</span>
                   <span className="text-brand-600">{formatTZS(o.totalAmount)}</span>
                 </div>
               </div>
