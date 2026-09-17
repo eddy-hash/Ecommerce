@@ -6,7 +6,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    List<Product> findByCategoryId(Long categoryId);
+    // Public queries — only active products
+    List<Product> findByActiveTrue();
+    List<Product> findByCategoryIdAndActiveTrue(Long categoryId);
+    List<Product> findByTraderIdAndActiveTrue(Long traderId);
+    List<Product> findByCategoryIdAndTraderIdAndActiveTrue(Long categoryId, Long traderId);
+
+    // Trader's own list — includes inactive
     List<Product> findByTraderId(Long traderId);
-    List<Product> findByCategoryIdAndTraderId(Long categoryId, Long traderId);
 }

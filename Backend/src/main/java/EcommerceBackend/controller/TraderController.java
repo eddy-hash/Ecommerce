@@ -11,13 +11,20 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/traders")
 public class TraderController {
+
     private final UserRepository users;
+
     public TraderController(UserRepository users) { this.users = users; }
 
     @GetMapping
     public List<Map<String, Object>> all() {
         return users.findByRole(User.Role.TRADER).stream()
-            .map(u -> Map.<String, Object>of("id", u.getId(), "name", u.getName(), "email", u.getEmail()))
+            .map(u -> Map.<String, Object>of(
+                "id", u.getId(),
+                "name", u.getName(),
+                "email", u.getEmail(),
+                "verified", u.getVerified() != null && u.getVerified()
+            ))
             .collect(Collectors.toList());
     }
 }

@@ -31,27 +31,42 @@ public class ProductService {
         this.files = files;
     }
 
+    // PUBLIC: only active products
     public List<ProductResponse> all(Long categoryId, Long traderId) {
         List<Product> list;
-        if (categoryId != null && traderId != null) list = products.findByCategoryIdAndTraderId(categoryId, traderId);
-        else if (categoryId != null) list = products.findByCategoryId(categoryId);
-        else if (traderId != null) list = products.findByTraderId(traderId);
-        else list = products.findAll();
+        if (categoryId != null && traderId != null) {
+            list = products.findByCategoryIdAndTraderIdAndActiveTrue(categoryId, traderId);
+        } else if (categoryId != null) {
+            list = products.findByCategoryIdAndActiveTrue(categoryId);
+        } else if (traderId != null) {
+            list = products.findByTraderIdAndActiveTrue(traderId);
+        } else {
+            list = products.findByActiveTrue();
+        }
         return list.stream().map(this::toResponse).collect(Collectors.toList());
     }
 
-    public ProductResponse get(Long id) { return toResponse(findById(id)); }
-
+    // Public — but trader's own listing includes inactive
     public List<ProductResponse> byTraderEmail(String email) {
-        User t = users.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("Trader not found"));
-        return products.findByTraderId(t.getId()).stream().map(this::toResponse).collect(Collectors.toList());
+        User t = users.findByEmail(email)
+            .orElseThrow(() -> new ResourceNotFoundException("Trader not found"));
+        return products.findByTraderId(t.getId())
+            .stream().map(this::toResponse).collect(Collectors.toList());
+    }
+
+    public ProductResponse get(Long id) {
+        Product p = findById(id);
+        // Inactive products visible only to their owner (checked in controller if needed)
+        return toResponse(p);
     }
 
     public ProductResponse create(ProductRequest req, String traderEmail) {
-        User t = users.findByEmail(traderEmail).orElseThrow(() -> new ResourceNotFoundException("Trader not found"));
+        User t = users.findByEmail(traderEmail)
+            .orElseThrow(() -> new ResourceNotFoundException("Trader not found"));
         Product p = new Product();
         apply(p, req);
         p.setTrader(t);
+        p.setActive(true);
         return toResponse(products.save(p));
     }
 
@@ -71,15 +86,30 @@ public class ProductService {
         return toResponse(products.save(p));
     }
 
+    // SOFT DELETE — mark as inactive
     public void delete(Long id, String traderEmail) {
         Product p = findById(id);
         if (!p.getTrader().getEmail().equals(traderEmail)) throw new BadRequestException("Not your product");
-        if (p.getImageUrl() != null) files.delete(p.getImageUrl());
-        products.delete(p);
+        p.setActive(false);
+        products.save(p);
+    }
+
+    // Reactivate — admin or trader can bring it back
+    public ProductResponse reactivate(Long id, String email) {
+        Product p = findById(id);
+        User u = users.findByEmail(email)
+            .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        // Owner or admin can reactivate
+        if (!p.getTrader().getEmail().equals(email) && u.getRole() != User.Role.ADMIN) {
+            throw new BadRequestException("Not your product");
+        }
+        p.setActive(true);
+        return toResponse(products.save(p));
     }
 
     private Product findById(Long id) {
-        return products.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+        return products.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
     }
 
     private void apply(Product p, ProductRequest req) {
@@ -108,6 +138,7 @@ public class ProductService {
             p.getCategory() != null ? p.getCategory().getName() : null,
             p.getTrader().getId(),
             p.getTrader().getName(),
+            p.getTrader().getVerified() != null ? p.getTrader().getVerified() : false,
             p.getImageUrl(),
             p.getCreatedAt()
         );

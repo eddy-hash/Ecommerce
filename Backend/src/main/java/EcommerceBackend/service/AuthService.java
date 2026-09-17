@@ -33,13 +33,15 @@ public class AuthService {
         }
         User.Role role;
         try { role = User.Role.valueOf(req.getRole().toUpperCase()); }
-        catch (IllegalArgumentException e) { throw new BadRequestException("Role must be CUSTOMER or TRADER"); }
+        catch (IllegalArgumentException e) { throw new BadRequestException("Role must be CUSTOMER, TRADER, or ADMIN"); }
 
         User u = new User();
         u.setName(req.getName().trim());
         u.setEmail(email);
         u.setPassword(encoder.encode(req.getPassword()));
         u.setRole(role);
+        // Admins are ALWAYS verified. Customers and traders default to unverified.
+        u.setVerified(role == User.Role.ADMIN);
 
         try { users.save(u); }
         catch (DataIntegrityViolationException e) {
@@ -47,7 +49,7 @@ public class AuthService {
         }
 
         String token = jwt.generateToken(u.getEmail(), u.getRole().name());
-        return new AuthResponse(token, u.getRole().name(), u.getName(), u.getEmail(), u.getId(), u.getAvatarUrl());
+        return toResponse(u, token);
     }
 
     public AuthResponse login(LoginRequest req) {
@@ -57,7 +59,25 @@ public class AuthService {
         if (!encoder.matches(req.getPassword(), u.getPassword()))
             throw new BadRequestException("Invalid email or password");
 
+        // Safety: if any admin is somehow unverified, force-fix it on login
+        if (u.getRole() == User.Role.ADMIN && !Boolean.TRUE.equals(u.getVerified())) {
+            u.setVerified(true);
+            users.save(u);
+        }
+
         String token = jwt.generateToken(u.getEmail(), u.getRole().name());
-        return new AuthResponse(token, u.getRole().name(), u.getName(), u.getEmail(), u.getId(), u.getAvatarUrl());
+        return toResponse(u, token);
+    }
+
+    private AuthResponse toResponse(User u, String token) {
+        return new AuthResponse(
+            token,
+            u.getRole().name(),
+            u.getName(),
+            u.getEmail(),
+            u.getId(),
+            u.getAvatarUrl(),
+            u.getVerified() != null ? u.getVerified() : false
+        );
     }
 }

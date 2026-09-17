@@ -29,6 +29,10 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trader_id", nullable = false) private User trader;
     @Column(name = "image_url", length = 500) private String imageUrl;
+    @Column(name = "active", nullable = false) private Boolean active = true;
     @Column(name = "created_at", nullable = false, updatable = false) private LocalDateTime createdAt;
-    @PrePersist protected void onCreate() { this.createdAt = LocalDateTime.now(); }
+    @PrePersist protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        if (this.active == null) this.active = true;
+    }
 }

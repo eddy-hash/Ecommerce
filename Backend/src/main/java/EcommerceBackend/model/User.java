@@ -20,7 +20,11 @@ public class User {
     @NotBlank @Column(nullable = false) private String password;
     @Enumerated(EnumType.STRING) @Column(nullable = false) private Role role;
     @Column(name = "avatar_url", length = 500) private String avatarUrl;
+    @Column(name = "verified", nullable = false) private Boolean verified = false;
     @Column(name = "created_at", nullable = false, updatable = false) private LocalDateTime createdAt;
-    @PrePersist protected void onCreate() { this.createdAt = LocalDateTime.now(); }
-    public enum Role { CUSTOMER, TRADER }
+    @PrePersist protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        if (this.verified == null) this.verified = false;
+    }
+    public enum Role { CUSTOMER, TRADER, ADMIN }
 }

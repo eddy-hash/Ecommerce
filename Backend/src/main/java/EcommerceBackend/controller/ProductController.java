@@ -49,5 +49,12 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id, Authentication auth) { svc.delete(id, auth.getName()); }
+    public void delete(@PathVariable Long id, Authentication auth) {
+        svc.delete(id, auth.getName());
+    }
+
+    @PostMapping("/{id}/reactivate")
+    public ProductResponse reactivate(@PathVariable Long id, Authentication auth) {
+        return svc.reactivate(id, auth.getName());
+    }
 }

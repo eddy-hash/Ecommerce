@@ -36,14 +36,12 @@ public class ProfileController {
     public AuthResponse uploadAvatar(@RequestParam("file") MultipartFile file, Authentication auth) {
         User u = users.findByEmail(auth.getName())
             .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-
         if (u.getAvatarUrl() != null && !u.getAvatarUrl().isBlank()) {
             files.delete(u.getAvatarUrl());
         }
         String filename = files.store(file);
         u.setAvatarUrl(filename);
         users.save(u);
-
         return toResponse(u, null);
     }
 
@@ -59,6 +57,14 @@ public class ProfileController {
     }
 
     private AuthResponse toResponse(User u, String token) {
-        return new AuthResponse(token, u.getRole().name(), u.getName(), u.getEmail(), u.getId(), u.getAvatarUrl());
+        return new AuthResponse(
+            token,
+            u.getRole().name(),
+            u.getName(),
+            u.getEmail(),
+            u.getId(),
+            u.getAvatarUrl(),
+            u.getVerified() != null ? u.getVerified() : false
+        );
     }
 }

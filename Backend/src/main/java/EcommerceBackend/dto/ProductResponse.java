@@ -19,6 +19,7 @@ public class ProductResponse {
     private String categoryName;
     private Long traderId;
     private String traderName;
+    private Boolean traderVerified;
     private String imageUrl;
     private LocalDateTime createdAt;
 }
