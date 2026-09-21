@@ -19,7 +19,10 @@
     "shop": "Nunua",
     "account": "Akaunti",
     "traderHub": "Kituo cha Mfanyabiashara",
-    "quickAccess": "Ufikiaji wa Haraka"
+    "quickAccess": "Ufikiaji wa Haraka",
+    "users": "Watumiaji",
+    "products": "Bidhaa",
+    "admin": "Msimamizi"
   },
   "home": {
     "badge": "Biashara na Usimamizi wa Oda",
@@ -55,7 +58,9 @@
     "trader": "Mfanyabiashara",
     "traderDesc": "Uza bidhaa zako mtandaoni",
     "accountCreated": "Akaunti imefunguliwa!",
-    "redirecting": "Inakupeleka..."
+    "redirecting": "Inakupeleka...",
+    "passwordStrength": "Nguvu ya nenosiri",
+    "onlyCustomers": "Wateja pekee wanaweza kununua bidhaa"
   },
   "product": {
     "addToCart": "Ongeza Kikapuni",
@@ -68,7 +73,13 @@
     "soldBy": "Inauzwa na",
     "uncategorized": "Bila kundi",
     "notFound": "Bidhaa haipatikani",
-    "notFoundDesc": "Bidhaa unayotafuta haipo."
+    "notFoundDesc": "Bidhaa unayotafuta haipo.",
+    "photo": "Picha ya bidhaa",
+    "summary": "Muhtasari",
+    "category": "Kundi",
+    "addProduct": "Ongeza Bidhaa",
+    "editProduct": "Hariri Bidhaa",
+    "revenue": "Mapato"
   },
   "cart": {
     "yourCart": "Kikapu Chako",
@@ -81,10 +92,16 @@
   "checkout": {
     "title": "Maliza Oda",
     "shipping": "Taarifa za usafirishaji",
+    "shippingAddr": "Usafirishaji",
     "payment": "Malipo",
     "review": "Kagua oda",
     "placeOrder": "Weka Oda",
-    "orderPlaced": "Oda imewekwa!"
+    "orderPlaced": "Oda imewekwa!",
+    "items": "Vitu",
+    "demoMode": "Hali ya majaribio — hakuna malipo ya kweli.",
+    "redirecting": "Inaelekeza kwenye oda zako…",
+    "emptyTitle": "Kikapu chako ni tupu",
+    "emptyDesc": "Ongeza bidhaa kabla ya kulipa."
   },
   "categories": {
     "title": "Makundi",
@@ -117,7 +134,8 @@
     "cancel": "Ghairi",
     "shipped": "imesafirishwa",
     "delivered": "imefikishwa",
-    "cancelled": "imeghairiwa"
+    "cancelled": "imeghairiwa",
+    "noItems": "Hakuna vitu katika oda hii."
   },
   "footer": {
     "tagline": "Mfumo wa Biashara na Usimamizi wa Oda — kuunganisha wateja na wafanyabiashara wanaoaminika.",
@@ -140,9 +158,40 @@
     "language": "Lugha",
     "yes": "Ndiyo",
     "no": "Hapana",
-    "close": "Funga"
+    "close": "Funga",
+    "viewAll": "Ona zote",
+    "saveChanges": "Hifadhi Mabadiliko"
   },
   "sidebar": {
     "welcome": "Karibu ShopHub"
+  },
+  "admin": {
+    "dashboard": "Dashibodi ya Msimamizi",
+    "dashboardDesc": "Muhtasari wa jukwaa na vidhibiti",
+    "management": "Usimamizi",
+    "manageUsers": "Dhibiti Watumiaji",
+    "manageUsersDesc": "Thibitisha wafanyabiashara, futa akaunti",
+    "manageProducts": "Dhibiti Bidhaa",
+    "manageProductsDesc": "Kagua na futa orodha",
+    "allOrders": "Oda Zote",
+    "allOrdersDesc": "Orodha ya oda za jukwaa lote",
+    "users": "Watumiaji",
+    "products": "Bidhaa",
+    "verify": "Thibitisha",
+    "unverify": "Ondoa uthibitisho"
+  },
+  "trader": {
+    "manageBusiness": "Dhibiti biashara yako",
+    "recentOrders": "Oda za Hivi Karibuni",
+    "yourProducts": "Bidhaa Zako",
+    "addFirstProduct": "Ongeza bidhaa yako ya kwanza"
+  },
+  "imageUploader": {
+    "clickToUpload": "Bofya kupakia au buruta na udondoshe",
+    "formats": "PNG, JPG, WEBP, GIF · Kiwango cha juu 5 MB"
+  },
+  "errors": {
+    "notFound": "Ukurasa haupatikani",
+    "notFoundDesc": "Ukurasa unaoutafuta haupo."
   }
 }

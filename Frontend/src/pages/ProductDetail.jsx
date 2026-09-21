@@ -42,7 +42,7 @@ export default function ProductDetail() {
 
   const handleAddToCart = () => {
     if (!user) { navigate('/login'); return }
-    if (user.role !== 'CUSTOMER') { setError('Only customers can add to cart'); return }
+    if (user.role !== 'CUSTOMER') { toast.error('Only customers can purchase products'); return }
     addItem({ ...product, color }, qty)
     toast.success(`${qty} × ${product.name}`)
   }
@@ -63,7 +63,7 @@ export default function ProductDetail() {
         <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="flex flex-col">
           <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-500 dark:text-gray-400 flex-wrap">
             <FiTag /> <span>{product.categoryName || t('product.uncategorized')}</span>
-            <span className="mx-1">•</span>
+            <span className="mx-1">|</span>
             <FiPackage /> <span>{t('product.soldBy')}</span> <Avatar user={{ name: product.traderName, verified: product.traderVerified }} size="xs" showBadge /> <span>{product.traderName}</span>
           </div>
 
@@ -99,10 +99,20 @@ export default function ProductDetail() {
           <div className="mt-4 sm:mt-6">
             <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">{t('product.quantity')}</label>
             <div className="flex items-center gap-3">
-              <button onClick={() => setQty(Math.max(1, qty - 1))} className="w-10 h-10 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 active:scale-95 transition">−</button>
-              <span className="w-12 text-center font-medium text-gray-900 dark:text-white">{qty}</span>
-              <button onClick={() => setQty(Math.min(product.stock, qty + 1))} className="w-10 h-10 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 active:scale-95 transition">+</button>
-            </div>
+                <select
+                  id="product-qty"
+                  value={qty}
+                  onChange={(e) => setQty(Number(e.target.value))}
+                  className="h-10 px-3 pr-8 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm font-medium text-gray-900 dark:text-white outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 cursor-pointer"
+                >
+                  {Array.from({ length: Math.min(product.stock, 20) }, (_, i) => i + 1).map((n) => (
+                    <option key={n} value={n}>{n}</option>
+                  ))}
+                </select>
+                <span className="text-sm text-gray-500 dark:text-gray-400">
+                  {product.stock} {t('product.inStock')}
+                </span>
+              </div>
           </div>
 
           {error && error !== 'not_found' && <div className="mt-4 p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 rounded-lg text-sm">{error}</div>}

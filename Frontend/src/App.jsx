@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import { AuthProvider } from './context/AuthContext'
 import { CartProvider } from './context/CartContext'
@@ -37,31 +37,31 @@ import NotFound from './pages/NotFound'
 function AnimatedRoutes() {
   const location = useLocation()
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence mode='wait'>
       <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<PageTransition><Home /></PageTransition>} />
-        <Route path="/login" element={<PageTransition><Login /></PageTransition>} />
-        <Route path="/register" element={<PageTransition><Register /></PageTransition>} />
-        <Route path="/categories" element={<PageTransition><Categories /></PageTransition>} />
-        <Route path="/categories/:id" element={<PageTransition><CategoryProducts /></PageTransition>} />
-        <Route path="/traders" element={<PageTransition><Traders /></PageTransition>} />
-        <Route path="/traders/:id/products" element={<PageTransition><TraderProducts /></PageTransition>} />
-        <Route path="/products/:id" element={<PageTransition><ProductDetail /></PageTransition>} />
-        <Route path="/profile" element={<PageTransition><ProtectedRoute><Profile /></ProtectedRoute></PageTransition>} />
-        <Route path="/checkout" element={<PageTransition><ProtectedRoute role="CUSTOMER"><Checkout /></ProtectedRoute></PageTransition>} />
-        <Route path="/orders" element={<PageTransition><ProtectedRoute role="CUSTOMER"><Orders /></ProtectedRoute></PageTransition>} />
-        <Route path="/trader/dashboard" element={<PageTransition><ProtectedRoute role="TRADER"><TraderDashboard /></ProtectedRoute></PageTransition>} />
-        <Route path="/trader/orders" element={<PageTransition><ProtectedRoute role="TRADER"><TraderOrders /></ProtectedRoute></PageTransition>} />
-        <Route path="/trader/products/new" element={<PageTransition><ProtectedRoute role="TRADER"><AddProduct /></ProtectedRoute></PageTransition>} />
-        <Route path="/trader/products/:id/edit" element={<PageTransition><ProtectedRoute role="TRADER"><EditProduct /></ProtectedRoute></PageTransition>} />
+        <Route path='/' element={<PageTransition><Home /></PageTransition>} />
+        <Route path='/login' element={<PageTransition><Login /></PageTransition>} />
+        <Route path='/register' element={<PageTransition><Register /></PageTransition>} />
+        <Route path='/categories' element={<PageTransition><Categories /></PageTransition>} />
+        <Route path='/categories/:id' element={<PageTransition><CategoryProducts /></PageTransition>} />
+        <Route path='/traders' element={<PageTransition><Traders /></PageTransition>} />
+        <Route path='/traders/:id/products' element={<PageTransition><TraderProducts /></PageTransition>} />
+        <Route path='/products/:id' element={<PageTransition><ProductDetail /></PageTransition>} />
+        <Route path='/profile' element={<PageTransition><ProtectedRoute><Profile /></ProtectedRoute></PageTransition>} />
+        <Route path='/checkout' element={<PageTransition><ProtectedRoute role='CUSTOMER'><Checkout /></ProtectedRoute></PageTransition>} />
+        <Route path='/orders' element={<PageTransition><ProtectedRoute role='CUSTOMER'><Orders /></ProtectedRoute></PageTransition>} />
+        <Route path='/trader/dashboard' element={<PageTransition><ProtectedRoute role='TRADER'><TraderDashboard /></ProtectedRoute></PageTransition>} />
+        <Route path='/trader/orders' element={<PageTransition><ProtectedRoute role='TRADER'><TraderOrders /></ProtectedRoute></PageTransition>} />
+        <Route path='/trader/products/new' element={<PageTransition><ProtectedRoute role='TRADER'><AddProduct /></ProtectedRoute></PageTransition>} />
+        <Route path='/trader/products/:id/edit' element={<PageTransition><ProtectedRoute role='TRADER'><EditProduct /></ProtectedRoute></PageTransition>} />
 
-        {/* ===== ADMIN ROUTES ===== */}
-        <Route path="/admin" element={<PageTransition><ProtectedRoute role="ADMIN"><AdminDashboard /></ProtectedRoute></PageTransition>} />
-        <Route path="/admin/users" element={<PageTransition><ProtectedRoute role="ADMIN"><AdminUsers /></ProtectedRoute></PageTransition>} />
-        <Route path="/admin/products" element={<PageTransition><ProtectedRoute role="ADMIN"><AdminProducts /></ProtectedRoute></PageTransition>} />
-        <Route path="/admin/orders" element={<PageTransition><ProtectedRoute role="ADMIN"><AdminOrders /></ProtectedRoute></PageTransition>} />
+        <Route path='/admin' element={<Navigate to='/admin/dashboard' replace />} />
+        <Route path='/admin/dashboard' element={<PageTransition><ProtectedRoute role='ADMIN'><AdminDashboard /></ProtectedRoute></PageTransition>} />
+        <Route path='/admin/users' element={<PageTransition><ProtectedRoute role='ADMIN'><AdminUsers /></ProtectedRoute></PageTransition>} />
+        <Route path='/admin/products' element={<PageTransition><ProtectedRoute role='ADMIN'><AdminProducts /></ProtectedRoute></PageTransition>} />
+        <Route path='/admin/orders' element={<PageTransition><ProtectedRoute role='ADMIN'><AdminOrders /></ProtectedRoute></PageTransition>} />
 
-        <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
+        <Route path='*' element={<PageTransition><NotFound /></PageTransition>} />
       </Routes>
     </AnimatePresence>
   )
@@ -77,11 +77,11 @@ export default function App() {
           <CurrencyProvider>
             <CartProvider>
               <AnimatedToast />
-              <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors">
+              <div className='min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors'>
                 <Navbar onMenuClick={() => setSidebarOpen(true)} />
                 <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
                 <CartDrawer />
-                <main className="flex-1">
+                <main className='flex-1'>
                   <AnimatedRoutes />
                 </main>
                 <Footer />

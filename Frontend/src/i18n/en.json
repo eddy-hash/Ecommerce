@@ -19,7 +19,10 @@
     "shop": "Shop",
     "account": "Account",
     "traderHub": "Trader Hub",
-    "quickAccess": "Quick Access"
+    "quickAccess": "Quick Access",
+    "users": "Users",
+    "products": "Products",
+    "admin": "Admin"
   },
   "home": {
     "badge": "E-Commerce & Order Management",
@@ -55,7 +58,9 @@
     "trader": "Trader",
     "traderDesc": "Sell your products online",
     "accountCreated": "Account created!",
-    "redirecting": "Redirecting you..."
+    "redirecting": "Redirecting you...",
+    "passwordStrength": "Password strength",
+    "onlyCustomers": "Only customers can purchase products"
   },
   "product": {
     "addToCart": "Add to Cart",
@@ -68,7 +73,13 @@
     "soldBy": "Sold by",
     "uncategorized": "Uncategorized",
     "notFound": "Product not found",
-    "notFoundDesc": "The product you're looking for doesn't exist."
+    "notFoundDesc": "The product you're looking for doesn't exist.",
+    "photo": "Product photo",
+    "summary": "Summary",
+    "category": "Category",
+    "addProduct": "Add Product",
+    "editProduct": "Edit Product",
+    "revenue": "Revenue"
   },
   "cart": {
     "yourCart": "Your Cart",
@@ -81,10 +92,16 @@
   "checkout": {
     "title": "Checkout",
     "shipping": "Shipping info",
+    "shippingAddr": "Shipping",
     "payment": "Payment",
     "review": "Review order",
     "placeOrder": "Place Order",
-    "orderPlaced": "Order placed!"
+    "orderPlaced": "Order placed!",
+    "items": "Items",
+    "demoMode": "Demo mode — no real charges.",
+    "redirecting": "Redirecting to your orders…",
+    "emptyTitle": "Your cart is empty",
+    "emptyDesc": "Add some products before checking out."
   },
   "categories": {
     "title": "Categories",
@@ -117,7 +134,8 @@
     "cancel": "Cancel",
     "shipped": "shipped",
     "delivered": "delivered",
-    "cancelled": "cancelled"
+    "cancelled": "cancelled",
+    "noItems": "No line items in this order."
   },
   "footer": {
     "tagline": "E-Commerce & Order Management System — connecting customers with trusted traders.",
@@ -140,9 +158,40 @@
     "language": "Language",
     "yes": "Yes",
     "no": "No",
-    "close": "Close"
+    "close": "Close",
+    "viewAll": "View all",
+    "saveChanges": "Save Changes"
   },
   "sidebar": {
     "welcome": "Welcome to ShopHub"
+  },
+  "admin": {
+    "dashboard": "Admin Dashboard",
+    "dashboardDesc": "Platform overview and controls",
+    "management": "Management",
+    "manageUsers": "Manage Users",
+    "manageUsersDesc": "Verify traders, delete accounts",
+    "manageProducts": "Manage Products",
+    "manageProductsDesc": "Review and delete listings",
+    "allOrders": "All Orders",
+    "allOrdersDesc": "Platform-wide order list",
+    "users": "Users",
+    "products": "Products",
+    "verify": "Verify",
+    "unverify": "Unverify"
+  },
+  "trader": {
+    "manageBusiness": "Manage your business",
+    "recentOrders": "Recent Orders",
+    "yourProducts": "Your Products",
+    "addFirstProduct": "Add your first product"
+  },
+  "imageUploader": {
+    "clickToUpload": "Click to upload or drag & drop",
+    "formats": "PNG, JPG, WEBP, GIF · Max 5 MB"
+  },
+  "errors": {
+    "notFound": "Page not found",
+    "notFoundDesc": "The page you're looking for doesn't exist."
   }
 }

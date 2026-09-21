@@ -1,8 +1,10 @@
 import { createContext, useContext, useEffect, useState } from 'react'
+import { useAuth } from './AuthContext'
 
 const CartContext = createContext(null)
 
 export function CartProvider({ children }) {
+  const { user } = useAuth()
   const [items, setItems] = useState([])
   const [isOpen, setIsOpen] = useState(false)
   const [hydrated, setHydrated] = useState(false)
@@ -20,7 +22,20 @@ export function CartProvider({ children }) {
     localStorage.setItem('cart', JSON.stringify(items))
   }, [items, hydrated])
 
+  // RBAC: clear cart whenever the logged-in user is not a customer
+  useEffect(() => {
+    if (hydrated && (!user || user.role !== 'CUSTOMER')) {
+      setItems([])
+      localStorage.removeItem('cart')
+    }
+  }, [user, hydrated])
+
   const addItem = (product, quantity = 1) => {
+    // RBAC: only CUSTOMER role may add items
+    if (!user || user.role !== 'CUSTOMER') {
+      console.warn('[Cart] blocked: only CUSTOMER role can add to cart')
+      return { ok: false, reason: 'not_customer' }
+    }
     setItems((prev) => {
       const existing = prev.find((i) => i.id === product.id)
       if (existing) {
@@ -31,6 +46,7 @@ export function CartProvider({ children }) {
       return [...prev, { ...product, quantity }]
     })
     setIsOpen(true)
+    return { ok: true }
   }
 
   const removeItem = (id) => setItems((prev) => prev.filter((i) => i.id !== id))
