@@ -1,6 +1,3 @@
-// Offline-safe product image resolver.
-// If product.imageUrl is set, it's a filename stored on the server.
-// Otherwise, use a bundled SVG placeholder by category.
 
 const PLACEHOLDER_MAP = {
   'Electronics':     '/placeholders/electronics.svg',

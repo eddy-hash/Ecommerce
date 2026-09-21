@@ -26,7 +26,7 @@ export default function CartDrawer() {
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Backdrop */}
+          
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -36,7 +36,7 @@ export default function CartDrawer() {
             onClick={() => setIsOpen(false)}
           />
 
-          {/* Drawer */}
+          
           <motion.aside
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
@@ -44,7 +44,7 @@ export default function CartDrawer() {
             transition={{ type: 'spring', stiffness: 380, damping: 38 }}
             className="fixed top-0 right-0 h-full w-full sm:w-[420px] bg-white dark:bg-gray-900 shadow-2xl z-50 flex flex-col"
           >
-            {/* Header */}
+            
             <div className="relative px-5 pt-5 pb-4 border-b border-gray-100 dark:border-gray-800">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -69,7 +69,7 @@ export default function CartDrawer() {
                 </button>
               </div>
 
-              {/* Free shipping progress */}
+              
               {items.length > 0 && (
                 <div className="mt-4">
                   <div className="flex items-center gap-2 mb-2">
@@ -102,7 +102,7 @@ export default function CartDrawer() {
               )}
             </div>
 
-            {/* Content */}
+            
             {items.length === 0 ? (
               <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
                 <motion.div
@@ -142,7 +142,7 @@ export default function CartDrawer() {
                         transition={{ duration: 0.25 }}
                         className="group relative flex gap-3 p-3 rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 hover:border-gray-200 dark:hover:border-gray-700 transition-colors"
                       >
-                        {/* Image */}
+                        
                         <div className="w-20 h-20 flex-shrink-0 rounded-xl bg-gray-50 dark:bg-gray-800/50 flex items-center justify-center overflow-hidden">
                           {item.imageUrl ? (
                             <img
@@ -157,7 +157,7 @@ export default function CartDrawer() {
                           )}
                         </div>
 
-                        {/* Info */}
+                        
                         <div className="flex-1 min-w-0 flex flex-col justify-between py-0.5">
                           <div>
                             <p className="font-semibold text-sm text-gray-900 dark:text-white line-clamp-2 leading-snug pr-6">
@@ -196,7 +196,7 @@ export default function CartDrawer() {
                           </div>
                         </div>
 
-                        {/* Remove button */}
+                        
                         <button
                           type="button"
                           onClick={() => removeItem(item.id)}
@@ -210,7 +210,7 @@ export default function CartDrawer() {
                   </AnimatePresence>
                 </div>
 
-                {/* Footer / summary */}
+                
                 <div className="border-t border-gray-100 dark:border-gray-800 px-5 py-4 space-y-4 bg-gray-50/50 dark:bg-gray-950/50">
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm text-gray-500 dark:text-gray-400">

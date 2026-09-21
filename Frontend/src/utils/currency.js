@@ -1,5 +1,3 @@
-// Legacy helper — kept for backward compatibility.
-// New components should use useCurrency() from CurrencyContext.
 
 const RATES = {
   TZS: 1,

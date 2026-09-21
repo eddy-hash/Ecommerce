@@ -93,3 +93,17 @@ body {
   .text-xl { font-size: 1rem !important; }
   .text-base { font-size: 0.875rem !important; }
 }
+/* Soft bounce used on the reset-password success icon */
+@keyframes softBounce {
+  0%   { transform: translateY(0)     scale(1); }
+  20%  { transform: translateY(-14px) scale(1.04); }
+  40%  { transform: translateY(0)     scale(0.98); }
+  55%  { transform: translateY(-7px)  scale(1.02); }
+  70%  { transform: translateY(0)     scale(0.99); }
+  82%  { transform: translateY(-3px)  scale(1); }
+  100% { transform: translateY(0)     scale(1); }
+}
+
+.animate-soft-bounce {
+  animation: softBounce 1.4s cubic-bezier(0.24, 1, 0.32, 1) 1;
+}

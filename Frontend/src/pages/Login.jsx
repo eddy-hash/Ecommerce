@@ -59,6 +59,11 @@ export default function Login() {
             required
             autoComplete="current-password"
           />
+<div className="flex justify-end -mt-2 mb-2">
+            <Link to="/reset-password" className="text-xs font-medium text-brand-600 hover:underline">
+              {t('auth.forgotPassword')}
+            </Link>
+          </div>
           <button type="submit" disabled={loading} className="btn-primary w-full flex items-center justify-center gap-2 py-3">
             <FiLogIn /> {loading ? t('auth.signingIn') : t('auth.signIn')}
           </button>

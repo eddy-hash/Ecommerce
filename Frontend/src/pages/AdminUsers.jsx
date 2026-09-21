@@ -78,7 +78,7 @@ export default function AdminUsers() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
-      {/* Header */}
+      
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2">
         <div>
           <h1 className="text-2xl sm:text-4xl font-bold text-gray-900 dark:text-white">Users</h1>
@@ -88,9 +88,9 @@ export default function AdminUsers() {
         </div>
       </div>
 
-      {/* Toolbar: search + filters */}
+      
       <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center">
-        {/* Search — icon absolutely positioned, input padded on the left */}
+        
         <div className="relative w-full sm:w-80 flex-shrink-0">
           <FiSearch
             className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4"
@@ -106,7 +106,7 @@ export default function AdminUsers() {
           />
         </div>
 
-        {/* Filters — horizontal scroll on mobile, wrap on sm+ */}
+        
         <div className="-mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-1 overflow-x-auto sm:overflow-visible">
           <div className="flex gap-2 w-max sm:w-auto sm:flex-wrap pb-1 sm:pb-0">
             {FILTERS.map(f => (
@@ -126,7 +126,7 @@ export default function AdminUsers() {
         </div>
       </div>
 
-      {/* Users list */}
+      
       <div className="mt-6 space-y-2">
         {filtered.length === 0 && (
           <div className="card p-8 text-center text-gray-500 dark:text-gray-400">
@@ -142,7 +142,7 @@ export default function AdminUsers() {
             transition={{ delay: i * 0.02 }}
             className="card p-3 sm:p-4"
           >
-            {/* Row: avatar + info on the left, actions on the right */}
+            
             <div className="flex items-start sm:items-center gap-3">
               <Avatar user={u} size="md" />
 
@@ -158,7 +158,7 @@ export default function AdminUsers() {
                   {u.email}
                 </p>
 
-                {/* Actions — full-width row on mobile, inline on sm+ */}
+                
                 <div className="mt-3 flex items-center gap-2 sm:hidden">
                   {u.role === 'TRADER' && (
                     <button
@@ -185,7 +185,7 @@ export default function AdminUsers() {
                 </div>
               </div>
 
-              {/* Desktop actions */}
+              
               <div className="hidden sm:flex items-center gap-2 flex-shrink-0">
                 {u.role === 'TRADER' && (
                   <button

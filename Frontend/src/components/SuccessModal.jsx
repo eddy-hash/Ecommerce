@@ -42,11 +42,11 @@ export default function SuccessModal({
                 </button>
               )}
 
-              {/* Custom animated SVG tick */}
+              
               <div className="relative mb-6">
                 <AnimatedTick size={112} />
 
-                {/* Confetti dots */}
+                
                 <div className="absolute inset-0 pointer-events-none">
                   {[...Array(10)].map((_, i) => (
                     <motion.div

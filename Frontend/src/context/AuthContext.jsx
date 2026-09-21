@@ -7,7 +7,6 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  // Load user from localStorage on mount
   useEffect(() => {
     const stored = localStorage.getItem('user')
     const token = localStorage.getItem('token')
@@ -16,7 +15,6 @@ export function AuthProvider({ children }) {
     }
     setLoading(false)
 
-    // Refresh profile in background if logged in
     if (token) {
       profileApi.me()
         .then((fresh) => {

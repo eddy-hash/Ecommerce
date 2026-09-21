@@ -12,6 +12,10 @@ export default function FloatingInput({
   autoComplete,
   as = 'input',
   rows = 4,
+  inputMode,
+  maxLength,
+  placeholder,
+  className: extraClass = '',
 }) {
   const [focused, setFocused] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
@@ -30,6 +34,9 @@ export default function FloatingInput({
     onBlur: () => setFocused(false),
     required,
     autoComplete,
+    inputMode,
+    maxLength,
+    placeholder,
     className: `peer w-full bg-transparent border-0 outline-none text-gray-900 dark:text-gray-100 pt-5 pb-2 ${
       Icon ? 'pl-11' : 'pl-3'
     } ${isPassword ? 'pr-11' : 'pr-3'}`,

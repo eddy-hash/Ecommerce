@@ -27,21 +27,145 @@ function ShippingStep({ data, update }) {
 }
 
 function PaymentStep({ data, update }) {
+  const formatCard = (v) => {
+    const d = v.replace(/\D/g, '').slice(0, 19)
+    if (/^3[47]/.test(d)) {
+      return d.replace(/^(\d{4})(\d{0,6})(\d{0,5}).*$/, (_, a, b, c) =>
+        [a, b, c].filter(Boolean).join(' ')
+      )
+    }
+    return d.replace(/(.{4})/g, '$1 ').trim()
+  }
+
+  const formatExpiry = (v) => {
+    const d = v.replace(/\D/g, '').slice(0, 4)
+    return d.length <= 2 ? d : d.slice(0, 2) + '/' + d.slice(2)
+  }
+
+  const formatCvc = (v) => v.replace(/\D/g, '').slice(0, 4)
+
+  const digits = (data.card || '').replace(/\D/g, '')
+
+  const brand =
+    /^4/.test(digits)          ? 'Visa' :
+    /^5[1-5]/.test(digits)     ? 'Mastercard' :
+    /^3[47]/.test(digits)      ? 'Amex' :
+    /^6(?:011|5)/.test(digits) ? 'Discover' :
+    null
+
+  const isAmex = /^3[47]/.test(digits)
+  const requiredCardLen = isAmex ? 15 : 16
+
+  const luhn = (n) => {
+    if (!n) return false
+    let sum = 0, alt = false
+    for (let i = n.length - 1; i >= 0; i--) {
+      let x = parseInt(n[i], 10)
+      if (alt) { x *= 2; if (x > 9) x -= 9 }
+      sum += x
+      alt = !alt
+    }
+    return sum % 10 === 0
+  }
+
+  const cardValid =
+    digits.length === requiredCardLen && luhn(digits)
+
+  const expiryValid = (() => {
+    const e = data.expiry || ''
+    if (!/^\d{2}\/\d{2}$/.test(e)) return false
+    const [mm, yy] = e.split('/').map(Number)
+    if (mm < 1 || mm > 12) return false
+    const now = new Date()
+    const expYear  = 2000 + yy
+    const expMonth = mm
+    const expEnd = new Date(expYear, expMonth, 0, 23, 59, 59)
+    return expEnd >= now
+  })()
+
+  const requiredCvcLen = isAmex ? 4 : 3
+  const cvcValid = (data.cvc || '').length === requiredCvcLen
+
+  const cardError =
+    data.card && !cardValid
+      ? (digits.length < requiredCardLen
+          ? `Card number must be ${requiredCardLen} digits`
+          : 'Invalid card number')
+      : null
+
+  const expiryError =
+    data.expiry && !expiryValid
+      ? (data.expiry.length < 5 ? 'Use MM/YY format' : 'Card is expired or invalid')
+      : null
+
+  const cvcError =
+    data.cvc && !cvcValid
+      ? `CVC must be ${requiredCvcLen} digits`
+      : null
+
   return (
     <div className="space-y-4">
-      <FloatingInput id="card" label="Card number" value={data.card || ''}
-        onChange={(e) => update({ card: e.target.value })} icon={FiCreditCard} required />
-      <div className="grid grid-cols-2 gap-4">
-        <FloatingInput id="expiry" label="Expiry (MM/YY)" value={data.expiry || ''}
-          onChange={(e) => update({ expiry: e.target.value })} required />
-        <FloatingInput id="cvc" label="CVC" value={data.cvc || ''}
-          onChange={(e) => update({ cvc: e.target.value })} required />
+      
+      <div>
+        <FloatingInput
+          id="card"
+          label="Card number"
+          value={data.card || ''}
+          onChange={(e) => update({ card: formatCard(e.target.value) })}
+          icon={FiCreditCard}
+          required
+          autoComplete="cc-number"
+          inputMode="numeric"
+          maxLength={19}
+        />
+        {(brand || cardError) && (
+          <div className="flex items-center justify-between mt-1.5">
+            <p className="text-[11px] text-red-500">{cardError || ''}</p>
+            {brand && (
+              <span className="text-[10px] font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">
+                {brand}
+              </span>
+            )}
+          </div>
+        )}
       </div>
-      <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">Demo mode — no real charges.</p>
+
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <FloatingInput
+            id="expiry"
+            label="Expiry (MM/YY)"
+            value={data.expiry || ''}
+            onChange={(e) => update({ expiry: formatExpiry(e.target.value) })}
+            required
+            autoComplete="cc-exp"
+            inputMode="numeric"
+            maxLength={5}
+          />
+          {expiryError && (
+            <p className="text-[11px] text-red-500 mt-1.5">{expiryError}</p>
+          )}
+        </div>
+
+        <div>
+          <FloatingInput
+            id="cvc"
+            label="CVC"
+            value={data.cvc || ''}
+            onChange={(e) => update({ cvc: formatCvc(e.target.value) })}
+            required
+            autoComplete="cc-csc"
+            inputMode="numeric"
+            maxLength={4}
+          />
+          {cvcError && (
+            <p className="text-[11px] text-red-500 mt-1.5">{cvcError}</p>
+          )}
+        </div>
+      </div>
     </div>
   )
 }
-
 function ReviewStep({ data }) {
   const { items, total } = useCart()
   const { format } = useCurrency()
@@ -164,7 +288,29 @@ export default function Checkout() {
         { label: 'Shipping', title: 'Shipping info', subtitle: 'Where should we send your order?',
           component: ShippingStep, validate: (d) => d.fullName && d.address && d.city && d.postal },
         { label: 'Payment', title: 'Payment', subtitle: 'Enter your card details',
-          component: PaymentStep, validate: (d) => d.card && d.expiry && d.cvc },
+          component: PaymentStep, validate: (d) => {
+          const cd = (d.card || '').replace(/\D/g, '')
+          const amex = /^3[47]/.test(cd)
+          const needLen = amex ? 15 : 16
+          const luhnOk = (() => {
+            if (cd.length !== needLen) return false
+            let s = 0, alt = false
+            for (let i = cd.length - 1; i >= 0; i--) {
+              let x = parseInt(cd[i], 10)
+              if (alt) { x *= 2; if (x > 9) x -= 9 }
+              s += x; alt = !alt
+            }
+            return s % 10 === 0
+          })()
+          const expOk = (() => {
+            if (!/^\d{2}\/\d{2}$/.test(d.expiry || '')) return false
+            const [mm, yy] = d.expiry.split('/').map(Number)
+            if (mm < 1 || mm > 12) return false
+            return new Date(2000 + yy, mm, 0, 23, 59, 59) >= new Date()
+          })()
+          const cvcOk = (d.cvc || '').length === (amex ? 4 : 3)
+          return luhnOk && expOk && cvcOk
+        } },
         { label: 'Review', title: 'Review order', subtitle: 'One last check before payment',
           component: ReviewStep },
       ]

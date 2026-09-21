@@ -8,7 +8,6 @@ client.interceptors.request.use((config) => {
 
   const isAuthRoute = url.startsWith('/auth/')
 
-  // Only the *browsing* GETs are public
   const isPublicGet =
     method === 'get' &&
     !url.startsWith('/products/mine') &&

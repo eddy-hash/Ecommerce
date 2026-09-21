@@ -22,7 +22,6 @@ export function CartProvider({ children }) {
     localStorage.setItem('cart', JSON.stringify(items))
   }, [items, hydrated])
 
-  // RBAC: clear cart whenever the logged-in user is not a customer
   useEffect(() => {
     if (hydrated && (!user || user.role !== 'CUSTOMER')) {
       setItems([])
@@ -31,7 +30,6 @@ export function CartProvider({ children }) {
   }, [user, hydrated])
 
   const addItem = (product, quantity = 1) => {
-    // RBAC: only CUSTOMER role may add items
     if (!user || user.role !== 'CUSTOMER') {
       console.warn('[Cart] blocked: only CUSTOMER role can add to cart')
       return { ok: false, reason: 'not_customer' }

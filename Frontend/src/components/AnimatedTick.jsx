@@ -19,10 +19,10 @@ export default function AnimatedTick({ size = 96, delay = 0.2 }) {
         </filter>
       </defs>
 
-      {/* Soft glow ring */}
+      
       <circle cx="50" cy="50" r="48" fill="#22c55e" opacity="0.12" />
 
-      {/* Solid gradient circle */}
+      
       <circle
         cx="50"
         cy="50"
@@ -42,7 +42,7 @@ export default function AnimatedTick({ size = 96, delay = 0.2 }) {
         />
       </circle>
 
-      {/* Tick stroke — draws itself */}
+      
       <path
         d="M30 52 L44 66 L70 38"
         stroke="#ffffff"

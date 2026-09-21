@@ -12,7 +12,6 @@ import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
 import { useTheme } from '../context/ThemeContext'
 
-// Role metadata — extend this if you add more roles later.
 const ROLE_META = {
   ADMIN:    { label: 'Admin',    Icon: FiShield,      pill: 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300' },
   TRADER:   { label: 'Trader',   Icon: FiShoppingBag, pill: 'bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300' },
@@ -29,7 +28,6 @@ export default function Sidebar({ isOpen, onClose }) {
   const navigate = useNavigate()
   const location = useLocation()
 
-  // Normalize role once so all comparisons are safe.
   const role = user?.role?.toString().toUpperCase?.() ?? 'GUEST'
   const roleMeta = ROLE_META[role] ?? FALLBACK_ROLE
   const RoleIcon = roleMeta.Icon

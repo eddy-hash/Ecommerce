@@ -64,7 +64,6 @@ export function CurrencyProvider({ children }) {
 export function useCurrency() {
   const ctx = useContext(CurrencyContext)
   if (!ctx) {
-    // Fallback for components used outside the provider (safety)
     return {
       currency: 'TZS',
       setCurrency: () => {},

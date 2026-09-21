@@ -62,7 +62,7 @@ export default function Profile() {
           Manage your account information
         </p>
 
-        {/* Avatar with badge overlay */}
+        
         <div className="flex flex-col items-center mb-8">
           <div className="relative">
             <Avatar user={user} size="xl" showBadge />
@@ -84,7 +84,7 @@ export default function Profile() {
             />
           </div>
 
-          {/* Name with badge below avatar */}
+          
           <div className="mt-4 flex items-center gap-2">
             <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
               {user.name}
@@ -92,7 +92,7 @@ export default function Profile() {
             {user.verified && <VerifiedBadge size="md" />}
           </div>
 
-          {/* Role badge */}
+          
           <div className={`mt-2 inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium ${
             user.role === 'TRADER'
               ? 'bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300'
@@ -107,7 +107,7 @@ export default function Profile() {
           </p>
         </div>
 
-        {/* Email (read-only) */}
+        
         <div className="mb-4">
           <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 block">Email</label>
           <div className="flex items-center gap-2 px-3 py-2.5 bg-gray-100 dark:bg-gray-700 rounded-lg text-gray-600 dark:text-gray-300">
@@ -116,7 +116,7 @@ export default function Profile() {
           </div>
         </div>
 
-        {/* Name (editable) */}
+        
         <div className="mb-4">
           <FloatingInput
             id="name"

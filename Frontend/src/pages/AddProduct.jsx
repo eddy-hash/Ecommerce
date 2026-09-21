@@ -9,17 +9,11 @@ import { productApi } from '../api/productApi'
 import { categoryApi } from '../api/categoryApi'
 import { useCurrency } from '../context/CurrencyContext'
 
-/**
- * Custom category dropdown.
- * Visual design matches the other fields (label inside top-left, value below).
- * The options list always opens BELOW the field.
- */
 function CategorySelect({ value, onChange, categories }) {
   const [open, setOpen] = useState(false)
   const ref = useRef(null)
   const selected = categories.find((c) => c.id === value)
 
-  // Close on outside click + Escape
   useEffect(() => {
     const onMouseDown = (e) => {
       if (ref.current && !ref.current.contains(e.target)) setOpen(false)
@@ -37,7 +31,7 @@ function CategorySelect({ value, onChange, categories }) {
 
   return (
     <div ref={ref} className="relative">
-      {/* Trigger — looks exactly like the original select */}
+      
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
@@ -53,14 +47,14 @@ function CategorySelect({ value, onChange, categories }) {
         </span>
       </button>
 
-      {/* Chevron on the right */}
+      
       <FiChevronDown
         className={`absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none transition-transform duration-200 ${
           open ? 'rotate-180' : ''
         }`}
       />
 
-      {/* Options — always rendered below the trigger */}
+      
       {open && (
         <ul
           role="listbox"

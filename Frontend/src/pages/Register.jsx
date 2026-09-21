@@ -7,8 +7,6 @@ import FloatingInput from '../components/FloatingInput'
 import SuccessModal from '../components/SuccessModal'
 import { authApi } from '../api/authApi'
 
-/* ---------- password strength ---------- */
-
 const RULES = [
   { key: 'length', label: 'At least 8 characters', test: (p) => p.length >= 8 },
   { key: 'upper',  label: 'One uppercase letter',  test: (p) => /[A-Z]/.test(p) },
@@ -38,7 +36,7 @@ function PasswordStrength({ password }) {
 
   return (
     <div className="mt-1 space-y-3">
-      {/* Segmented bar */}
+      
       <div className="flex gap-1.5">
         {RULES.map((_, i) => (
           <div
@@ -55,13 +53,13 @@ function PasswordStrength({ password }) {
         ))}
       </div>
 
-      {/* Strength label */}
+      
       <div className="flex items-center justify-between">
         <span className="text-xs text-gray-500 dark:text-gray-400">Password strength</span>
         <span className={`text-xs font-semibold ${meta.text}`}>{meta.label}</span>
       </div>
 
-      {/* Criteria checklist */}
+      
       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1.5">
         {RULES.map((r) => {
           const ok = r.test(password)
@@ -88,8 +86,6 @@ function PasswordStrength({ password }) {
     </div>
   )
 }
-
-/* ---------- steps ---------- */
 
 function RoleStep({ data, update }) {
   const { t } = useTranslation()
@@ -152,13 +148,11 @@ function AccountStep({ data, update }) {
         autoComplete="new-password"
       />
 
-      {/* Password strength meter — pure render, no side effects */}
+      
       <PasswordStrength password={data.password || ''} />
     </div>
   )
 }
-
-/* ---------- page ---------- */
 
 export default function Register() {
   const { t } = useTranslation()
@@ -196,7 +190,6 @@ export default function Register() {
       title: t('auth.createAccount'),
       subtitle: '',
       component: AccountStep,
-      // Require score >= 3 (Fair) before submitting
       validate: (d) =>
         !!d.name &&
         !!d.email &&

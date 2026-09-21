@@ -16,6 +16,7 @@ import PageTransition from './components/PageTransition'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import ResetPassword from './pages/ResetPassword'
 import Categories from './pages/Categories'
 import CategoryProducts from './pages/CategoryProducts'
 import Traders from './pages/Traders'
@@ -41,6 +42,7 @@ function AnimatedRoutes() {
       <Routes location={location} key={location.pathname}>
         <Route path='/' element={<PageTransition><Home /></PageTransition>} />
         <Route path='/login' element={<PageTransition><Login /></PageTransition>} />
+        <Route path='/reset-password' element={<PageTransition><ResetPassword /></PageTransition>} />
         <Route path='/register' element={<PageTransition><Register /></PageTransition>} />
         <Route path='/categories' element={<PageTransition><Categories /></PageTransition>} />
         <Route path='/categories/:id' element={<PageTransition><CategoryProducts /></PageTransition>} />
