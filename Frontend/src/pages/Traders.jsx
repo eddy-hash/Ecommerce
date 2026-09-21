@@ -1,62 +1,79 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import { useTranslation } from 'react-i18next'
-import { FiArrowRight } from 'react-icons/fi'
+import { useParams, Link } from 'react-router-dom'
+import { FiArrowLeft } from 'react-icons/fi'
+import toast from 'react-hot-toast'
+import { productApi } from '../api/productApi'
 import { traderApi } from '../api/traderApi'
+import ProductCard from '../components/ProductCard'
 import Spinner from '../components/Spinner'
 import EmptyState from '../components/EmptyState'
-import VerifiedBadge from '../components/VerifiedBadge'
-import Avatar from '../components/Avatar'
 
-export default function Traders() {
-  const { t } = useTranslation()
-  const [traders, setTraders] = useState([])
+export default function TraderProducts() {
+  const { id } = useParams()
+  const [products, setProducts] = useState([])
+  const [trader, setTrader] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
 
   useEffect(() => {
-    traderApi.list().then(setTraders).finally(() => setLoading(false))
-  }, [])
+    setLoading(true)
+    setError(false)
+
+    Promise.all([
+      productApi.list({ traderId: id }),
+      traderApi.list(),
+    ])
+      .then(([p, tr]) => {
+        setProducts(Array.isArray(p) ? p : [])
+        const match = Array.isArray(tr) ? tr.find((t) => t.id === Number(id)) : null
+        setTrader(match || null)
+      })
+      .catch((err) => {
+        console.error('TraderProducts load failed:', err?.response?.status, err?.response?.data)
+        toast.error(`Failed to load products (${err?.response?.status ?? 'network'})`)
+        setError(true)
+        setProducts([])
+        setTrader(null)
+      })
+      .finally(() => setLoading(false))
+  }, [id])
 
   if (loading) return <Spinner size="lg" />
 
+  const heading = trader?.name
+    ? `${trader.name}'s Products`
+    : 'Trader Products'
+
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
-      <div>
-        <h1 className="text-2xl sm:text-4xl font-bold text-gray-900 dark:text-white">{t('traders.title')}</h1>
-        <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 mt-1 sm:mt-2">{t('traders.subtitle')}</p>
-      </div>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <Link
+        to="/traders"
+        className="inline-flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 hover:text-brand-600 mb-6"
+      >
+        <FiArrowLeft /> Back to traders
+      </Link>
 
-      {traders.length === 0 ? (
-        <EmptyState title={t('traders.noTraders')} message={t('traders.noTradersDesc')} />
+      <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white">
+        {heading}
+      </h1>
+      <p className="text-gray-500 dark:text-gray-400 mt-2">
+        {products.length} {products.length === 1 ? 'product' : 'products'}
+      </p>
+
+      {error ? (
+        <EmptyState
+          title="Couldn't load products"
+          message="There was a problem reaching the server. Try again in a moment."
+        />
+      ) : products.length === 0 ? (
+        <EmptyState
+          title="No products yet"
+          message="This trader hasn't listed any products yet."
+        />
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 mt-6 sm:mt-10">
-          {traders.map((tr, i) => (
-            <motion.div key={tr.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
-              <Link
-                to={`/traders/${tr.id}/products`}
-                className="card p-4 sm:p-6 hover:shadow-md active:scale-[0.98] transition-all group block"
-              >
-                <div className="flex flex-col items-center text-center sm:flex-row sm:text-left sm:items-center gap-3 sm:gap-4">
-                  {/* Profile picture with badge overlay */}
-                  <Avatar user={tr} size="lg" showBadge />
-
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-center sm:justify-start gap-1.5">
-                      <h3 className="font-bold text-sm sm:text-base text-gray-900 dark:text-white group-hover:text-brand-600 transition truncate">
-                        {tr.name}
-                      </h3>
-                      {tr.verified && <VerifiedBadge size="sm" />}
-                    </div>
-                    <p className="text-[10px] sm:text-sm text-gray-500 dark:text-gray-400 truncate mt-0.5">
-                      {tr.email}
-                    </p>
-                  </div>
-
-                  <FiArrowRight className="hidden sm:block w-5 h-5 text-gray-400 group-hover:text-brand-600 group-hover:translate-x-1 transition flex-shrink-0" />
-                </div>
-              </Link>
-            </motion.div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 mt-10">
+          {products.map((p) => (
+            <ProductCard key={p.id} product={p} />
           ))}
         </div>
       )}

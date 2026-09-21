@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+﻿import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { FiTag } from 'react-icons/fi'
 import { resolveProductImage } from '../utils/images'
@@ -19,7 +19,6 @@ export default function ProductCard({ product }) {
         to={`/products/${product.id}`}
         className="card overflow-hidden !p-0 flex flex-col group"
       >
-        {/* Image — full image visible, no background, no frame, no zoom */}
         <div className="flex items-center justify-center p-3">
           <img
             src={resolveProductImage(product)}
@@ -38,7 +37,6 @@ export default function ProductCard({ product }) {
           <h3 className="font-semibold text-gray-900 dark:text-white line-clamp-1">{product.name}</h3>
           <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-1 mt-0.5">{product.traderName}</p>
           <div className="mt-3 flex items-center justify-between">
-            {/* live currency — re-renders when CurrencyContext changes */}
             <span className="text-lg font-bold text-brand-600">{format(product.price)}</span>
             <span className={`text-xs px-2 py-1 rounded-full font-medium ${
               inStock

@@ -74,6 +74,7 @@ export default function AdminProducts() {
             No products found
           </div>
         )}
+
         {filtered.map((p, i) => (
           <motion.div
             key={p.id}
@@ -101,7 +102,6 @@ export default function AdminProducts() {
                 <p className="font-semibold text-sm sm:text-base text-gray-900 dark:text-white truncate">
                   {p.name}
                 </p>
-                {/* ✅ FIXED: reads flat fields from the updated backend */}
                 <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 truncate">
                   {p.categoryName || 'Uncategorized'} · by {p.traderName || '—'}
                 </p>

@@ -4,6 +4,7 @@ import { FiX, FiTrash2, FiPlus, FiMinus, FiShoppingBag } from 'react-icons/fi'
 import { useTranslation } from 'react-i18next'
 import { useCart } from '../context/CartContext'
 import { useCurrency } from '../context/CurrencyContext'
+import { resolveProductImage } from '../utils/images'
 
 export default function CartDrawer() {
   const { t } = useTranslation()
@@ -51,9 +52,27 @@ export default function CartDrawer() {
               <>
                 <div className="flex-1 overflow-y-auto p-4 space-y-4">
                   {items.map((item) => (
-                    <motion.div key={item.id} layout initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-                      className="flex gap-3 border-b border-gray-100 dark:border-gray-700 pb-4">
-                      <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-100 dark:bg-gray-700 rounded-lg flex-shrink-0" />
+                    <motion.div
+                      key={item.id}
+                      layout
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="flex gap-3 border-b border-gray-100 dark:border-gray-700 pb-4"
+                    >
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 flex items-center justify-center">
+                        {item.imageUrl ? (
+                          <img
+                            src={resolveProductImage(item)}
+                            alt={item.name}
+                            loading="lazy"
+                            className="max-w-full max-h-full object-contain"
+                            onError={(e) => { e.currentTarget.src = '/placeholders/product.svg' }}
+                          />
+                        ) : (
+                          <FiShoppingBag className="w-5 h-5 text-gray-400" />
+                        )}
+                      </div>
+
                       <div className="flex-1 min-w-0">
                         <p className="font-medium text-sm truncate text-gray-900 dark:text-white">{item.name}</p>
                         <p className="text-brand-600 font-semibold mt-0.5 text-sm">{format(item.price)}</p>

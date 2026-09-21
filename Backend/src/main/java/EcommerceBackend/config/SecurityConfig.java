@@ -40,13 +40,13 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/files/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/categories/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/traders/**").permitAll()
                 .requestMatchers("/api/products/mine").hasRole("TRADER")
                 .requestMatchers(HttpMethod.POST, "/api/products").hasRole("TRADER")
                 .requestMatchers(HttpMethod.PUT, "/api/products/**").hasRole("TRADER")
                 .requestMatchers(HttpMethod.DELETE, "/api/products/**").hasRole("TRADER")
                 .requestMatchers(HttpMethod.POST, "/api/products/*/image").hasRole("TRADER")
+                .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
                 .requestMatchers("/api/orders/received").hasRole("TRADER")
                 .requestMatchers("/api/orders/stats").hasRole("TRADER")
                 .requestMatchers("/api/orders/*/ship").hasRole("TRADER")
@@ -64,7 +64,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration cfg = new CorsConfiguration();
-        cfg.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost:5173"));
+        cfg.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost:3001"));
         cfg.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
         cfg.setAllowedHeaders(List.of("*"));
         cfg.setAllowCredentials(true);

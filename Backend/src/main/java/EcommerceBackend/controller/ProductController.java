@@ -25,11 +25,13 @@ public class ProductController {
         return svc.all(categoryId, traderId);
     }
 
+    @GetMapping("/mine")
+    public List<ProductResponse> mine(Authentication auth) {
+        return svc.byTraderEmail(auth.getName());
+    }
+
     @GetMapping("/{id}")
     public ProductResponse get(@PathVariable Long id) { return svc.get(id); }
-
-    @GetMapping("/mine")
-    public List<ProductResponse> mine(Authentication auth) { return svc.byTraderEmail(auth.getName()); }
 
     @PostMapping
     public ProductResponse create(@Valid @RequestBody ProductRequest req, Authentication auth) {
